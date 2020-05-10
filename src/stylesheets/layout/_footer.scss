@@ -1,0 +1,14 @@
+.footer {
+  &__timer {
+    & > *:not(:first-child) {
+      margin-left: 1rem;
+    }
+  }
+
+  &__control {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    padding: .5rem;
+  }
+}
