@@ -7,7 +7,7 @@ import TaskListItem from './TaskListItem';
 const TaskList: FC<{ title: string, tasks: Task[] }> = props => {
     const renderTasks = () => {
         if (!props.tasks.length) {
-            return null;
+            return <p className="text-muted">No se han agregado tareas</p>;
         }
         return props.tasks.map(task => <TaskListItem key={task.id} {...task} />)
     };
