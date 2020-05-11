@@ -1,0 +1,14 @@
+.task-list {
+  &__header {
+    font-weight: 700;
+  }
+
+  &__body {
+    height: 20rem;
+    overflow-y: auto;
+  }
+
+  &__duration {
+    font-size: 12px;
+  }
+}

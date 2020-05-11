@@ -7,7 +7,7 @@ const Header: FC<any> = () => {
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Brand as={Link} to="/" className="ml-3">Productivity App</Navbar.Brand>
             <Navbar.Toggle />
-            <Navbar.Collapse>
+            <Navbar.Collapse className="ml-3">
                 <Nav>
                     <Nav.Link as={Link} to="/tareas">Tareas</Nav.Link>
                     <Nav.Link as={Link} to="/reportes">Reportes</Nav.Link>
