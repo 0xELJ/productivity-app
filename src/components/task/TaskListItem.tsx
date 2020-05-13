@@ -3,6 +3,7 @@ import { Task } from '../../types/Task';
 import { Card, ListGroup } from 'react-bootstrap';
 import Icon from '@mdi/react';
 import { mdiTimer } from '@mdi/js';
+import { formatTaskTime } from '../../utils/formatTaskTime';
 
 const TaskListItem: FC<Task> = ({ name, description, timeLeft, active }) => {
     const activeItemClass = active ? 'text-white bg-primary' : '';
@@ -15,7 +16,9 @@ const TaskListItem: FC<Task> = ({ name, description, timeLeft, active }) => {
             </div>
             <div className="w-25 pl-1 align-self-end d-flex">
                 <Icon path={mdiTimer} size={1} />
-                <span className="ml-1">{timeLeft}</span>
+                <span className="ml-1">
+                    {formatTaskTime(timeLeft)}
+                </span>
             </div>
         </ListGroup.Item>
     );

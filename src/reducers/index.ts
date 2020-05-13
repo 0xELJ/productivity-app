@@ -4,5 +4,5 @@ import { activeTaskReducer } from './activeTaskReducer';
 
 export const rootReducer = combineReducers({
     tasks: tasksReducer,
-    activeTask: activeTaskReducer
+    activeTask: activeTaskReducer,
 });

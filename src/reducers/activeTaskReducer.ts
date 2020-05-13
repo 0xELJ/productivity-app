@@ -6,8 +6,8 @@ const INITIAL_STATE: Task | null = {
     id: '1',
     name: 'Card Title 1',
     description: 'Some quick example text to build on the card and make up the bulk of the card\'s content.',
-    durationTime: '01:15:00',
-    timeLeft: '00:50:33',
+    durationTime: { hours: 1, minutes: 15, seconds: 15 },
+    timeLeft: { hours: 0, minutes: 50, seconds: 33 },
     active: true,
     createdAt: '15/10/2019',
     enabled: true,
@@ -15,7 +15,7 @@ const INITIAL_STATE: Task | null = {
 
 export function activeTaskReducer(state = INITIAL_STATE, action: Action): Task | null {
     switch (action.type) {
-        case ActionTypes.TASKS_SET_ACTIVE:
+        case ActionTypes.TASK_SET_ACTIVE:
             return { ...action.payload };
         default:
             return state;

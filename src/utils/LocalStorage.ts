@@ -6,7 +6,7 @@ export class LocalStorage {
     setItem(key: StorageKeys, value: any): void {
         try {
             const serializedData = JSON.stringify(value);
-            this.storage.setItem(key, JSON.stringify(serializedData));
+            this.storage.setItem(key, serializedData);
         } catch(error) {
             alert('Ocurrió un error al guardar los datos\n' + error.message);
         }
@@ -30,14 +30,6 @@ export class LocalStorage {
             this.storage.removeItem(key);
         } catch (error) {
             alert('No fue posible remover el dato\n' + error.message);
-        }
-    }
-
-    clear(): void {
-        try {
-            this.storage.clear();
-        } catch (error) {
-            alert('Error al eliminar todos los datos\n' + error.message);
         }
     }
 }

@@ -1,3 +1,4 @@
 export enum ActionTypes {
-    TASKS_SET_ACTIVE = 'TASKS_SET_ACTIVE',
+    TASK_SET_ACTIVE = 'TASK_SET_ACTIVE',
+    TASK_ADD_NEW = 'TASK_ADD_NEW'
 }

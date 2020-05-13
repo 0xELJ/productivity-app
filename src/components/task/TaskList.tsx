@@ -9,7 +9,7 @@ const TaskList: FC<{ title: string, tasks: Task[] }> = props => {
         if (!props.tasks.length) {
             return <p className="text-muted">No se han agregado tareas</p>;
         }
-        return props.tasks.map(task => <TaskListItem key={task.id} {...task} />)
+        return props.tasks.map((task, i) => <TaskListItem key={task.id} {...task} />)
     };
 
     return (
