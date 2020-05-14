@@ -28,14 +28,12 @@ const TaskTimer: FC<{ activeTask: Task }> = ({ activeTask }) => {
         if (seconds === 0) {
             if (minutes === 0 && hours === 0) {
                 setIsRunning(false);
-                console.log('stopping counter 1');
             } else {
                 setTaskTime({ hours, minutes: minutes - 1, seconds: 59 })
             }
         }
         if (minutes === 0) {
             if (hours === 0) {
-                console.log('stopping counter 2');
                 setIsRunning(false);
             } else {
                 setTaskTime({ hours: hours - 1, minutes: 59, seconds: 59 });
