@@ -2,14 +2,27 @@ import React, { FC, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import TaskList from '../components/task/TaskList';
-import { TasksState } from '../types/TasksState';
 import TaskCreate from './TaskCreate';
+import TaskDetails from './TaskDetails';
+import { selectTask } from '../actions/tasks';
+import { TasksProps } from '../types/TasksProps';
+import { Task } from '../types/Task';
 
-const Tasks: FC<{ tasks: TasksState }> = props => {
+const Tasks: FC<TasksProps> = props => {
     const [showCreateTask, setShowCreateTask] = useState(false);
+    const [showTaskDetails, setShowTaskDetails] = useState(false);
 
     const toggleCreateTask = () => {
         setShowCreateTask(!showCreateTask);
+    };
+
+    const toggleTaskDetails = () => {
+        setShowTaskDetails(!showTaskDetails);
+    };
+
+    const handleSelectTask = (id: string) => {
+        toggleTaskDetails();
+        props.setSelectedTask(id);
     };
 
     return (
@@ -19,18 +32,27 @@ const Tasks: FC<{ tasks: TasksState }> = props => {
                 <Button onClick={toggleCreateTask} variant="success" size="lg">Agregar tarea</Button>
                 <Row className="mt-4">
                     <Col md="6" className="mb-4">
-                        <TaskList title="Tareas pendientes" tasks={props.tasks.pending}/>
+                        <TaskList
+                            title="Tareas pendientes"
+                            tasks={props.tasks}
+                            onSelectTask={handleSelectTask}
+                        />
                     </Col>
                     <Col md="6">
-                        <TaskList title="Tareas completadas" tasks={props.tasks.completed}/>
+                        <TaskList
+                            title="Tareas completadas"
+                            tasks={[]}
+                            onSelectTask={handleSelectTask}
+                        />
                     </Col>
                 </Row>
             </div>
             <TaskCreate show={showCreateTask} handleClose={toggleCreateTask} />
+            <TaskDetails show={showTaskDetails} handleClose={toggleTaskDetails} />
         </section>
     );
 };
 
-const mapStateToProps = (state: { tasks: TasksState }) => ({ tasks: state.tasks });
+const mapStateToProps = (state: { tasks: Task[] }) => ({ tasks: state.tasks });
 
-export default connect(mapStateToProps)(Tasks);
+export default connect(mapStateToProps, { setSelectedTask: selectTask })(Tasks);

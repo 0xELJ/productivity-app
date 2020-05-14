@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import InputField from '../components/form/InputField';
+import InputField from '../form/InputField';
 import { Field, Form } from 'react-final-form';
-import { FormValidator } from '../utils/FormValidator';
-import { TaskValidator } from '../utils/TaskValidator';
-import { TaskFormValues } from '../types/TaskFormValues';
+import { FormValidator } from '../../utils/FormValidator';
+import { TaskValidator } from '../../utils/TaskValidator';
+import { TaskFormProps } from '../../types/TaskFormProps';
 
-const TaskForm: FC<{ id: string, onSubmit(values: TaskFormValues): void }> = ({ id, onSubmit }) => {
+const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues }) => {
     const validator = new FormValidator();
     const timeValidations = [
         validator.required,
@@ -18,6 +18,7 @@ const TaskForm: FC<{ id: string, onSubmit(values: TaskFormValues): void }> = ({ 
       <Form
         onSubmit={onSubmit}
         validate={taskValidator.validateDuration}
+        initialValues={initialValues}
         render={({ handleSubmit, error }) => (
             <form id={id} onSubmit={handleSubmit}>
                 <Field

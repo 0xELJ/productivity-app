@@ -12,8 +12,7 @@ const store = createStore(rootReducer, persistedState);
 
 store.subscribe(throttle(() => {
     localStorage.setItem(StorageKeys.TASKS, {
-        tasks: store.getState().tasks,
-        activeTask: store.getState().activeTask
+        tasks: store.getState().tasks
     });
 }, 1000));
 

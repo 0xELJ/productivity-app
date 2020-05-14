@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import TaskForm from './TaskForm';
+import TaskForm from '../components/task/TaskForm';
 import { Button, Modal } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 import { connect } from 'react-redux';

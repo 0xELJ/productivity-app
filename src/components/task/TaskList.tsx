@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 import { Card, Dropdown, ListGroup } from 'react-bootstrap';
-
-import { Task } from '../../types/Task';
 import TaskListItem from './TaskListItem';
+import { TaskListProps } from '../../types/TaskListProps';
 
-const TaskList: FC<{ title: string, tasks: Task[] }> = props => {
+const TaskList: FC<TaskListProps> = props => {
     const renderTasks = () => {
         if (!props.tasks.length) {
             return <p className="text-muted">No se han agregado tareas</p>;
         }
-        return props.tasks.map((task, i) => <TaskListItem key={task.id} {...task} />)
+        return props.tasks.map((task, i) => <TaskListItem key={task.id} onSelect={props.onSelectTask} {...task} />)
     };
 
     return (

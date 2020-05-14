@@ -4,7 +4,9 @@ import './stylesheets/main.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Moment from 'react-moment';
-
+import 'moment-timezone';
+import 'moment/locale/es'
+    ;
 Moment.globalTimezone = 'America/Mexico_City';
 
 ReactDOM.render(
