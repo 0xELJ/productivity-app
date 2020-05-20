@@ -34,14 +34,15 @@ const Tasks: FC<TasksProps> = props => {
                     <Col md="6" className="mb-4">
                         <TaskList
                             title="Tareas pendientes"
-                            tasks={props.tasks}
+                            tasks={props.pendingTasks}
                             onSelectTask={handleSelectTask}
+                            activeTaskId={props.pendingTasks[0]?.id}
                         />
                     </Col>
                     <Col md="6">
                         <TaskList
                             title="Tareas completadas"
-                            tasks={[]}
+                            tasks={props.completedTasks}
                             onSelectTask={handleSelectTask}
                         />
                     </Col>
@@ -53,6 +54,11 @@ const Tasks: FC<TasksProps> = props => {
     );
 };
 
-const mapStateToProps = (state: { tasks: Task[] }) => ({ tasks: state.tasks });
+const mapStateToProps = (state: { tasks: Task[] }) => {
+    return {
+        pendingTasks: state.tasks.filter(task => task.enabled),
+        completedTasks: state.tasks.filter(task => !task.enabled)
+    };
+};
 
 export default connect(mapStateToProps, { setSelectedTask: selectTask })(Tasks);

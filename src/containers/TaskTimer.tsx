@@ -8,14 +8,18 @@ import { formatTaskTime } from '../utils/formatTaskTime';
 import activeTaskSelector from '../selectors/activeTaskSelector';
 import { TaskTime } from '../types/TaskTime';
 import { useInterval } from '../hooks/useInterval';
+import { completeTask, updateTask } from '../actions/tasks';
+import { TaskTimerProps } from '../types/TaskTimerProps';
 
-const TaskTimer: FC<{ activeTask: Task }> = ({ activeTask }) => {
+const TaskTimer: FC<TaskTimerProps> = ({ activeTask, finishTask, patchTask }) => {
     const [taskTime, setTaskTime] = useState<TaskTime>({hours: 0, minutes: 0, seconds: 0 });
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
     useEffect(() => {
         if (activeTask?.timeLeft) {
             setTaskTime(activeTask.timeLeft);
+        } else {
+            setTaskTime({ hours: 0, minutes: 0, seconds: 0 });
         }
     }, [activeTask]);
 
@@ -25,51 +29,70 @@ const TaskTimer: FC<{ activeTask: Task }> = ({ activeTask }) => {
         if (seconds > 0) {
             setTaskTime({hours, minutes, seconds: seconds - 1})
         }
-        if (seconds === 0) {
-            if (minutes === 0 && hours === 0) {
-                setIsRunning(false);
-            } else {
-                setTaskTime({ hours, minutes: minutes - 1, seconds: 59 })
-            }
-        }
-        if (minutes === 0) {
-            if (hours === 0) {
-                setIsRunning(false);
-            } else {
-                setTaskTime({ hours: hours - 1, minutes: 59, seconds: 59 });
-            }
+        if (seconds === 0 && minutes === 0 && hours === 0) {
+            onComplete();
+        } else if (seconds === 0 && minutes > 0) {
+            setTaskTime({ hours, minutes: minutes - 1, seconds: 59 })
+        } else if (seconds === 0 && hours > 0) {
+            setTaskTime({ hours: hours - 1, minutes: 59, seconds: 59 });
         }
     }, isRunning ? 1000 : 0);
 
-    const playOrPause = () => {
+    const onPlayOrPause = () => {
         setIsRunning(!isRunning);
+        onUpdateTask();
     };
 
-    const stop = () => {
+    const onStop = () => {
         setIsRunning(false);
-        setTaskTime(activeTask.durationTime);
+        onUpdateTask(activeTask?.durationTime);
+    };
+
+    const onRefresh = () => {
+        onUpdateTask(activeTask?.durationTime);
+    };
+
+    const onComplete = () => {
+        setIsRunning(false);
+        finishTask(taskTime);
+    };
+
+    const onUpdateTask = (customTime?: TaskTime) => {
+        const currentTask = activeTask as Task;
+        patchTask({ ...currentTask, timeLeft: customTime || taskTime });
     };
 
     return (
         <div className="footer__timer d-flex align-items-center px-3 py-2">
-            <Button className="footer__control d-flex align-items-center justify-content-center">
+            <Button
+                onClick={onStop}
+                className="footer__control d-flex align-items-center justify-content-center"
+                disabled={!activeTask} >
                 <Icon path={mdiStop} size={1} className="footer__icon" />
             </Button>
-            <Button onClick={playOrPause} className="footer__control d-flex align-items-center justify-content-center">
+            <Button
+                onClick={onPlayOrPause}
+                className="footer__control d-flex align-items-center justify-content-center"
+                disabled={!activeTask} >
                 <Icon path={isRunning ? mdiPause : mdiPlay} size={1} />
             </Button>
-            <Button onClick={stop} className="footer__control d-flex align-items-center justify-content-center">
+            <Button
+                onClick={onRefresh}
+                className="footer__control d-flex align-items-center justify-content-center"
+                disabled={!activeTask} >
                 <Icon path={mdiRefresh} size={1} />
             </Button>
             <p className="mb-0 footer__counter">
                 {formatTaskTime(taskTime)}
             </p>
-            <p className="mb-0 footer__task"><strong>{activeTask ? activeTask.name : '-'}</strong></p>
-            <Button className="ml-auto">Completar</Button>
+            <p className="mb-0 footer__task"><strong>
+                {activeTask?.name || '-'}</strong>
+            </p>
+            <Button onClick={onComplete} className="ml-auto" disabled={!activeTask}>Completar</Button>
         </div>
     );
 };
 
 const mapStateToProps = (state: { tasks: Task[] }) => ({ activeTask: activeTaskSelector(state) });
 
-export default connect(mapStateToProps)(TaskTimer);
+export default connect(mapStateToProps, { finishTask: completeTask, patchTask: updateTask })(TaskTimer);

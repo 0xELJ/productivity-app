@@ -60,13 +60,25 @@ const TaskDetails: FC<TaskDetailsProps> = (props) => {
         handleClose();
     };
 
+    const allowUpdate = () => {
+        if (task?.enabled) {
+            return <Button onClick={handleSubmitEvent} variant="warning">Modificar</Button>;
+        }
+        return null;
+    };
+
     return (
         <Modal animation={false} show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Detalles de tarea</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <TaskForm id={taskFormId} onSubmit={onSubmit} initialValues={getFormValues()} />
+                <TaskForm
+                    id={taskFormId}
+                    onSubmit={onSubmit}
+                    initialValues={getFormValues()}
+                    disabled={!task?.enabled}
+                />
                 <p className="mb-0">
                     <span className="font-weight-bold">Creada: </span>
                     <Moment fromNow>{task?.createdAt}</Moment>
@@ -74,13 +86,13 @@ const TaskDetails: FC<TaskDetailsProps> = (props) => {
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={deleteTask} variant="danger" className="mr-auto">Eliminar</Button>
-                <Button onClick={handleSubmitEvent} variant="warning">Modificar</Button>
+                {allowUpdate()}
             </Modal.Footer>
         </Modal>
     );
 };
 
-const mapStateToProps = (state: any) => ({ task: taskDetailsSelector(state) });
+const mapStateToProps = (state: { tasks: Task[], selectedTask: string }) => ({ task: taskDetailsSelector(state) });
 
 export default connect(mapStateToProps, {
     resetTask: resetSelectedTask,
