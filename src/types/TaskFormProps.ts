@@ -4,4 +4,5 @@ export interface TaskFormProps {
     id: string;
     onSubmit(values: TaskFormValues): void;
     initialValues?: TaskFormValues;
+    disabled?: boolean;
 }

@@ -5,7 +5,7 @@ import { FormValidator } from '../../utils/FormValidator';
 import { TaskValidator } from '../../utils/TaskValidator';
 import { TaskFormProps } from '../../types/TaskFormProps';
 
-const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues }) => {
+const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) => {
     const validator = new FormValidator();
     const timeValidations = [
         validator.required,
@@ -21,6 +21,7 @@ const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues }) => {
         initialValues={initialValues}
         render={({ handleSubmit, error }) => (
             <form id={id} onSubmit={handleSubmit}>
+                <fieldset disabled={disabled}>
                 <Field
                     name="name"
                     component={InputField}
@@ -35,7 +36,8 @@ const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues }) => {
                     placeholder="Descripción"
                     validate={validator.required}
                 />
-                <fieldset>
+                </fieldset>
+                <fieldset disabled={disabled}>
                     <label>Duración:</label>
                     <div className="w-100 d-flex">
                         <Field

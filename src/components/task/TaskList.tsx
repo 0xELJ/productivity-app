@@ -3,18 +3,27 @@ import { Card, Dropdown, ListGroup } from 'react-bootstrap';
 import TaskListItem from './TaskListItem';
 import { TaskListProps } from '../../types/TaskListProps';
 
-const TaskList: FC<TaskListProps> = props => {
+const TaskList: FC<TaskListProps> = ({ title, tasks, onSelectTask, activeTaskId }) => {
     const renderTasks = () => {
-        if (!props.tasks.length) {
+        if (!tasks.length) {
             return <p className="text-muted">No se han agregado tareas</p>;
         }
-        return props.tasks.map((task, i) => <TaskListItem key={task.id} onSelect={props.onSelectTask} {...task} />)
+        return tasks.map((task, i) => {
+            return (
+                <TaskListItem
+                    {...task}
+                    key={task.id}
+                    onSelect={onSelectTask}
+                    active={task.id === activeTaskId}
+                />
+            );
+        })
     };
 
     return (
         <Card className="task-list">
             <Card.Header className="task-list__header d-flex align-items-center">
-                <span>{props.title}</span>
+                <span>{title}</span>
                 <Dropdown className="ml-auto">
                     <Dropdown.Toggle
                         variant="secondary"

@@ -4,4 +4,5 @@ export interface TaskListProps {
     title: string;
     tasks: Task[];
     onSelectTask(id: string): void;
+    activeTaskId?: string;
 }
