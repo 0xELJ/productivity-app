@@ -2,6 +2,7 @@ import { Action } from '../types/Action';
 import { ActionTypes } from '../constants/ActionTypes';
 import { Task } from '../types/Task';
 import { TaskTime } from '../types/TaskTime';
+import { TaskFilters } from '../constants/TaskFilters';
 
 export function createTask(task: Task): Action {
     return {
@@ -41,5 +42,19 @@ export function completeTask(time: TaskTime): Action {
     return {
         type: ActionTypes.TASK_COMPLETE_ACTIVE,
         payload: time
+    };
+}
+
+export function setPendingTasksFilter(filter: TaskFilters) {
+    return {
+        type: ActionTypes.TASKS_PENDING_SET_FILTER,
+        payload: filter
+    };
+}
+
+export function setCompletedTasksFilter(filter: TaskFilters) {
+    return {
+        type: ActionTypes.TASKS_COMPLETED_SET_FILTER,
+        payload: filter
     };
 }

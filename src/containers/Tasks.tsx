@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import TaskList from '../components/task/TaskList';
 import TaskCreate from './TaskCreate';
 import TaskDetails from './TaskDetails';
-import { selectTask } from '../actions/tasks';
+import { selectTask, setCompletedTasksFilter, setPendingTasksFilter } from '../actions/tasks';
 import { TasksProps } from '../types/TasksProps';
 import { Task } from '../types/Task';
+import { TaskFilters } from '../constants/TaskFilters';
 
 const Tasks: FC<TasksProps> = props => {
     const [showCreateTask, setShowCreateTask] = useState(false);
@@ -25,6 +26,14 @@ const Tasks: FC<TasksProps> = props => {
         props.setSelectedTask(id);
     };
 
+    const handlePressPendingFilter = (filter: TaskFilters) => {
+        props.setPendingFilter(filter);
+    };
+
+    const handlePressCompletedFilter = (filter: TaskFilters) => {
+        props.setCompletedFilter(filter);
+    };
+
     return (
         <section className="my-5">
             <div className="container">
@@ -36,6 +45,8 @@ const Tasks: FC<TasksProps> = props => {
                             title="Tareas pendientes"
                             tasks={props.pendingTasks}
                             onSelectTask={handleSelectTask}
+                            onPressFilter={handlePressPendingFilter}
+                            currentFilter={props.pendingFilter}
                             activeTaskId={props.pendingTasks[0]?.id}
                         />
                     </Col>
@@ -44,6 +55,8 @@ const Tasks: FC<TasksProps> = props => {
                             title="Tareas completadas"
                             tasks={props.completedTasks}
                             onSelectTask={handleSelectTask}
+                            currentFilter={props.completedFilter}
+                            onPressFilter={handlePressCompletedFilter}
                         />
                     </Col>
                 </Row>
@@ -54,11 +67,17 @@ const Tasks: FC<TasksProps> = props => {
     );
 };
 
-const mapStateToProps = (state: { tasks: Task[] }) => {
+const mapStateToProps = (state: { tasks: Task[], filters: { completedFilter: TaskFilters, pendingFilter: TaskFilters } }) => {
     return {
         pendingTasks: state.tasks.filter(task => task.enabled),
-        completedTasks: state.tasks.filter(task => !task.enabled)
+        completedTasks: state.tasks.filter(task => !task.enabled),
+        pendingFilter: state.filters.pendingFilter,
+        completedFilter: state.filters.completedFilter,
     };
 };
 
-export default connect(mapStateToProps, { setSelectedTask: selectTask })(Tasks);
+export default connect(mapStateToProps, {
+    setSelectedTask: selectTask,
+    setPendingFilter: setPendingTasksFilter,
+    setCompletedFilter: setCompletedTasksFilter
+})(Tasks);

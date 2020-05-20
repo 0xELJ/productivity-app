@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { Card, Dropdown, ListGroup } from 'react-bootstrap';
+import { Card, ListGroup } from 'react-bootstrap';
 import TaskListItem from './TaskListItem';
 import { TaskListProps } from '../../types/TaskListProps';
+import TaskFilterList from './TaskFilterList';
+import { TaskFilterOptions } from '../../constants/TaskFilterOptions';
 
-const TaskList: FC<TaskListProps> = ({ title, tasks, onSelectTask, activeTaskId }) => {
+const TaskList: FC<TaskListProps> = ({ title, tasks, onSelectTask, activeTaskId, onPressFilter, currentFilter }) => {
     const renderTasks = () => {
         if (!tasks.length) {
             return <p className="text-muted">No se han agregado tareas</p>;
@@ -24,21 +26,7 @@ const TaskList: FC<TaskListProps> = ({ title, tasks, onSelectTask, activeTaskId 
         <Card className="task-list">
             <Card.Header className="task-list__header d-flex align-items-center">
                 <span>{title}</span>
-                <Dropdown className="ml-auto">
-                    <Dropdown.Toggle
-                        variant="secondary"
-                        size="sm"
-                        className="text-dark bg-white"
-                        id="dropdown-duration">
-                        Duración
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Cualquiera</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Cortas</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Medianas</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Largas</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                <TaskFilterList filters={TaskFilterOptions} currentFilter={currentFilter} onPressFilter={onPressFilter} />
             </Card.Header>
 
             <Card.Body>
