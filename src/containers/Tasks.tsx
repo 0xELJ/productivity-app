@@ -8,6 +8,8 @@ import { selectTask, setCompletedTasksFilter, setPendingTasksFilter } from '../a
 import { TasksProps } from '../types/TasksProps';
 import { Task } from '../types/Task';
 import { TaskFilters } from '../constants/TaskFilters';
+import completedTasksSelector from '../selectors/completedTasksSelector';
+import pendingTasksSelector from '../selectors/pendingTasksSelector';
 
 const Tasks: FC<TasksProps> = props => {
     const [showCreateTask, setShowCreateTask] = useState(false);
@@ -69,8 +71,8 @@ const Tasks: FC<TasksProps> = props => {
 
 const mapStateToProps = (state: { tasks: Task[], filters: { completedFilter: TaskFilters, pendingFilter: TaskFilters } }) => {
     return {
-        pendingTasks: state.tasks.filter(task => task.enabled),
-        completedTasks: state.tasks.filter(task => !task.enabled),
+        pendingTasks: pendingTasksSelector(state),
+        completedTasks: completedTasksSelector(state),
         pendingFilter: state.filters.pendingFilter,
         completedFilter: state.filters.completedFilter,
     };
