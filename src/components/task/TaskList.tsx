@@ -5,7 +5,6 @@ import { TaskListProps } from '../../types/TaskListProps';
 import TaskFilterList from './TaskFilterList';
 import { TaskFilterOptions } from '../../constants/TaskFilterOptions';
 
-// TODO: Refactor this component. Must be splitted into 3 componenets: TaskPanel, TaskList and TaskFilter
 const TaskList: FC<TaskListProps> = ({ title, tasks, onSelectTask, activeTaskId, onPressFilter, currentFilter }) => {
     const renderTasks = () => {
         if (!tasks.length) {

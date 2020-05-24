@@ -57,8 +57,8 @@ const Tasks: FC<TasksProps> = props => {
                             title="Tareas completadas"
                             tasks={props.completedTasks}
                             onSelectTask={handleSelectTask}
-                            currentFilter={props.completedFilter}
                             onPressFilter={handlePressCompletedFilter}
+                            currentFilter={props.completedFilter}
                         />
                     </Col>
                 </Row>

@@ -6,7 +6,7 @@ import { formatTaskTime } from '../../utils/formatTaskTime';
 import { TaskListItemProps } from '../../types/TaskListItemProps';
 
 const TaskListItem: FC<TaskListItemProps> = ({ id, name, description, durationTime, active, onSelect }) => {
-    const defaultClass = 'd-flex justify-content-between mb-3 border-top rounded';
+    const defaultClass = 'task-list__item d-flex justify-content-between mb-3 border-top rounded';
     const taskClass = active ? `${defaultClass} text-white bg-primary` : defaultClass;
 
     const handleClick = () => {
