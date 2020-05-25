@@ -58,7 +58,7 @@ const Tasks: FC<TasksProps> = props => {
                             activeTaskId={props.activeTaskId}
                         />
                     </Col>
-                    <Col md="6">
+                    <Col md="6" className="mb-5">
                         <TaskList
                             title="Tareas completadas"
                             tasks={props.completedTasks}

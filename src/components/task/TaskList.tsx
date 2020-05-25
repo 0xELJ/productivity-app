@@ -9,6 +9,13 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 const TaskList: FC<TaskListProps> = props => {
     const { title, tasks, onSelectTask, activeTaskId, onPressFilter, currentFilter, onDragEnd, disableDrop } = props;
 
+    const handleDragEnd = ({ source, destination }: DropResult) => {
+        if (!destination) {
+            return;
+        }
+        onDragEnd(tasks[source.index].id, tasks[destination.index].id);
+    };
+
     const renderTasks = () => {
         if (!tasks.length) {
             return <p className="text-muted">No se han agregado tareas</p>;
@@ -31,16 +38,9 @@ const TaskList: FC<TaskListProps> = props => {
         })
     };
 
-    const handleDragEnd = ({ source, destination }: DropResult) => {
-        if (!destination) {
-            return;
-        }
-        onDragEnd(tasks[source.index].id, tasks[destination.index].id);
-    };
-
     return (
         <Card className="task-list">
-            <Card.Header className="task-list__header d-flex align-items-center">
+            <Card.Header className="task-list__header d-flex align-items-center bg-light border-0">
                 <span>{title}</span>
                 <TaskFilterList
                     filters={TaskFilterOptions}
@@ -49,10 +49,10 @@ const TaskList: FC<TaskListProps> = props => {
                 />
             </Card.Header>
 
-            <Card.Body>
+            <Card.Body className="bg-light">
                 <DragDropContext onDragEnd={handleDragEnd}>
                     <Droppable isDropDisabled={disableDrop || false} droppableId="droppable">
-                        {(provided, snapshot) => (
+                        {provided => (
                             <div {...provided.droppableProps} ref={provided.innerRef}>
                                 <ListGroup className="task-list__body border-0">
                                     {renderTasks()}

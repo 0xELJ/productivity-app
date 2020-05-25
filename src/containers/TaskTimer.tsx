@@ -68,31 +68,34 @@ const TaskTimer: FC<TaskTimerProps> = ({ activeTask, finishTask, patchTask }) =>
                 onClick={onStop}
                 className="footer__control d-flex align-items-center justify-content-center"
                 disabled={!activeTask} >
-                <Icon path={mdiStop} size={1} className="footer__icon" />
+                <Icon path={mdiStop} size={0.8} />
             </Button>
             <Button
                 onClick={onPlayOrPause}
                 className="footer__control d-flex align-items-center justify-content-center"
                 disabled={!activeTask} >
-                <Icon path={isRunning ? mdiPause : mdiPlay} size={1} />
+                <Icon path={isRunning ? mdiPause : mdiPlay} size={0.8} />
             </Button>
             <Button
                 onClick={onRefresh}
                 className="footer__control d-flex align-items-center justify-content-center"
                 disabled={!activeTask} >
-                <Icon path={mdiRefresh} size={1} />
+                <Icon path={mdiRefresh} size={0.8} />
             </Button>
-            <p className="mb-0 footer__counter">
+            <p className="footer__counter mb-0">
                 {formatTaskTime(taskTime)}
             </p>
-            <p className="mb-0 footer__task"><strong>
-                {activeTask?.name || '-'}</strong>
+            <p className="footer__task mb-0 w-100 d-inline-block text-truncate">
+                <strong>{activeTask?.name || '-'}</strong>
             </p>
-            <Button onClick={onComplete} className="ml-auto" disabled={!activeTask}>Completar</Button>
+            <Button onClick={onComplete} className="ml-auto" size="sm" disabled={!activeTask}>Completar</Button>
         </div>
     );
 };
 
 const mapStateToProps = (state: { tasks: Task[] }) => ({ activeTask: activeTaskSelector(state) });
 
-export default connect(mapStateToProps, { finishTask: completeTask, patchTask: updateTask })(TaskTimer);
+export default connect(mapStateToProps, {
+    finishTask: completeTask,
+    patchTask: updateTask
+})(TaskTimer);

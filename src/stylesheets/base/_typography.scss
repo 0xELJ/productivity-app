@@ -1,0 +1,13 @@
+html {
+  @include respond(tab-land) { // width < 1200
+    font-size: 87.5%; // 1rem = 14px, 14/16 * 100 = 87.5%
+  }
+
+  @include respond(tab-port) { // width < 900
+    font-size: 81.25%; // 1rem = 13px, 13/16 * 100 = 81.25%
+  }
+
+  @include respond(phone) { // width < 600
+    font-size: 75%; // 1rem = 12px, 12/16 * 100 = 75%
+  }
+}
