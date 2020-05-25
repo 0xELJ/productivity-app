@@ -1,4 +1,5 @@
 import { TaskTime } from './TaskTime';
+import { DraggableProvided } from 'react-beautiful-dnd';
 
 export interface TaskListItemProps {
     id: string;
@@ -7,4 +8,6 @@ export interface TaskListItemProps {
     durationTime: TaskTime;
     active: boolean;
     onSelect(id: string): void;
+    innerRef(element?: HTMLElement | null): any;
+    provided: DraggableProvided;
 }

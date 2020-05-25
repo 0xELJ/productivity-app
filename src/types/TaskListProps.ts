@@ -8,4 +8,6 @@ export interface TaskListProps {
     activeTaskId?: string;
     onPressFilter(filter: TaskFilters): void;
     currentFilter: TaskFilters;
+    onDragEnd(startId: string, endId: string): void;
+    disableDrop?: boolean;
 }

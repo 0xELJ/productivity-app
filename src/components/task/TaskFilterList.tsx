@@ -1,13 +1,7 @@
 import React, { FC } from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { TaskFilters } from '../../constants/TaskFilters';
 import TaskFilterLink from './TaskFilterLink';
-
-interface TaskFilterListProps {
-    filters: readonly { filter: TaskFilters, label: string }[];
-    currentFilter: TaskFilters,
-    onPressFilter(filter: TaskFilters): void;
-}
+import { TaskFilterListProps } from '../../types/TaskFilterListProps';
 
 const TaskFilterList: FC<TaskFilterListProps> = ({ filters, currentFilter, onPressFilter }) => {
     const renderLinks = () => {
@@ -25,7 +19,7 @@ const TaskFilterList: FC<TaskFilterListProps> = ({ filters, currentFilter, onPre
     return (
         <Dropdown className="ml-auto">
             <Dropdown.Toggle
-                variant="secondary"
+                variant="info"
                 size="sm"
                 id="dropdown-duration">
                 Duración

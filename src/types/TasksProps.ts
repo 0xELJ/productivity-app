@@ -10,4 +10,6 @@ export interface TasksProps {
     setCompletedFilter(filter: TaskFilters): any;
     pendingFilter: TaskFilters;
     completedFilter: TaskFilters;
+    reorderTaskList(startId: string, endId: string): any;
+    activeTaskId: string | undefined;
 }

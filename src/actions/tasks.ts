@@ -58,3 +58,11 @@ export function setCompletedTasksFilter(filter: TaskFilters) {
         payload: filter
     };
 }
+
+export function reorderTasks(startId: string, endId: string) {
+    return {
+        type: ActionTypes.TASK_REORDER_LIST,
+        payload: { startId, endId }
+    };
+
+}
