@@ -44,7 +44,6 @@ const Tasks: FC<TasksProps> = props => {
     return (
         <section className="my-5">
             <div className="container">
-                <h1 className="text-center mb-5">Tareas</h1>
                 <Button onClick={toggleCreateTask} variant="success" size="lg">Agregar tarea</Button>
                 <Row className="mt-4">
                     <Col md="6" className="mb-4">
