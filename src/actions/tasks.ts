@@ -4,6 +4,18 @@ import { Task } from '../types/Task';
 import { TaskTime } from '../types/TaskTime';
 import { TaskFilters } from '../constants/TaskFilters';
 
+export function fetchTasks() {
+    return async function (dispatch: Function) {
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+        let fakeTodos = await response.json();
+        fakeTodos = fakeTodos.slice(0, 50);
+        dispatch({
+            type: ActionTypes.TASK_GET_RANDOM_LIST,
+            payload: fakeTodos
+        });
+    }
+}
+
 export function createTask(task: Task): Action {
     return {
         type: ActionTypes.TASK_ADD_PENDING,
@@ -64,5 +76,4 @@ export function reorderTasks(startId: string, endId: string) {
         type: ActionTypes.TASK_REORDER_LIST,
         payload: { startId, endId }
     };
-
 }

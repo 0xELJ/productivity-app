@@ -1,23 +1,17 @@
 import React, { FC } from 'react';
 import InputField from '../form/InputField';
 import { Field, Form } from 'react-final-form';
-import { FormValidator } from '../../utils/FormValidator';
-import { TaskValidator } from '../../utils/TaskValidator';
+import { required, mustBeNumber, minValue, maxValue, parseToNumber, composeValidators } from '../../utils/formValidator';
+import { validateDuration } from '../../utils/taskValidator';
 import { TaskFormProps } from '../../types/TaskFormProps';
 
 const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) => {
-    const validator = new FormValidator();
-    const timeValidations = [
-        validator.required,
-        validator.mustBeNumber,
-        validator.minValue(0),
-    ];
-    const taskValidator = new TaskValidator();
+    const timeValidations = [required, mustBeNumber, minValue(0)];
 
     return (
       <Form
         onSubmit={onSubmit}
-        validate={taskValidator.validateDuration}
+        validate={validateDuration}
         initialValues={initialValues}
         render={({ handleSubmit, error }) => (
             <form id={id} onSubmit={handleSubmit}>
@@ -27,14 +21,14 @@ const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) 
                     component={InputField}
                     label="Nombre"
                     placeholder="Nombre"
-                    validate={validator.required}
+                    validate={required}
                 />
                 <Field
                     name="description"
                     component={InputField}
                     label="Descripción"
                     placeholder="Descripción"
-                    validate={validator.required}
+                    validate={required}
                 />
                 </fieldset>
                 <fieldset disabled={disabled}>
@@ -46,8 +40,8 @@ const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) 
                             hideLabel={true}
                             placeholder="hh"
                             inputType="number"
-                            parse={validator.parseToNumber}
-                            validate={validator.composeValidators(...timeValidations, validator.maxValue(2))}
+                            parse={parseToNumber}
+                            validate={composeValidators(...timeValidations, maxValue(2))}
                         />
                         <span className="mx-1">:</span>
                         <Field
@@ -56,8 +50,8 @@ const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) 
                             hideLabel={true}
                             placeholder="mm"
                             inputType="number"
-                            parse={validator.parseToNumber}
-                            validate={validator.composeValidators(...timeValidations, validator.maxValue(59))}
+                            parse={parseToNumber}
+                            validate={composeValidators(...timeValidations, maxValue(59))}
                         />
                         <span className="mx-1">:</span>
                         <Field
@@ -66,8 +60,8 @@ const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) 
                             hideLabel={true}
                             placeholder="ss"
                             inputType="number"
-                            parse={validator.parseToNumber}
-                            validate={validator.composeValidators(...timeValidations, validator.maxValue(59))}
+                            parse={parseToNumber}
+                            validate={composeValidators(...timeValidations, maxValue(59))}
                         />
                     </div>
                 </fieldset>

@@ -64,24 +64,26 @@ const TaskTimer: FC<TaskTimerProps> = ({ activeTask, finishTask, patchTask }) =>
 
     return (
         <div className="footer__timer d-flex align-items-center px-3 py-2">
-            <Button
-                onClick={onStop}
-                className="footer__control d-flex align-items-center justify-content-center"
-                disabled={!activeTask} >
-                <Icon path={mdiStop} size={0.8} />
-            </Button>
-            <Button
-                onClick={onPlayOrPause}
-                className="footer__control d-flex align-items-center justify-content-center"
-                disabled={!activeTask} >
-                <Icon path={isRunning ? mdiPause : mdiPlay} size={0.8} />
-            </Button>
-            <Button
-                onClick={onRefresh}
-                className="footer__control d-flex align-items-center justify-content-center"
-                disabled={!activeTask} >
-                <Icon path={mdiRefresh} size={0.8} />
-            </Button>
+            <div className="d-flex">
+                <Button
+                    onClick={onStop}
+                    className="footer__control d-flex align-items-center justify-content-center mr-2"
+                    disabled={!activeTask} >
+                    <Icon path={mdiStop} size={1} />
+                </Button>
+                <Button
+                    onClick={onPlayOrPause}
+                    className="footer__control d-flex align-items-center justify-content-center mr-2"
+                    disabled={!activeTask} >
+                    <Icon path={isRunning ? mdiPause : mdiPlay} size={1} />
+                </Button>
+                <Button
+                    onClick={onRefresh}
+                    className="footer__control d-flex align-items-center justify-content-center"
+                    disabled={!activeTask} >
+                    <Icon path={mdiRefresh} size={1} />
+                </Button>
+            </div>
             <p className="footer__counter mb-0">
                 {formatTaskTime(taskTime)}
             </p>
