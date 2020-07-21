@@ -1,50 +1,67 @@
 import React, { FC } from 'react';
-import { Card, Dropdown, ListGroup } from 'react-bootstrap';
+import { Card, ListGroup } from 'react-bootstrap';
 import TaskListItem from './TaskListItem';
 import { TaskListProps } from '../../types/TaskListProps';
+import TaskFilterList from './TaskFilterList';
+import { TaskFilterOptions } from '../../constants/TaskFilterOptions';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 
-const TaskList: FC<TaskListProps> = ({ title, tasks, onSelectTask, activeTaskId }) => {
+const TaskList: FC<TaskListProps> = props => {
+    const { title, tasks, onSelectTask, activeTaskId, onPressFilter, currentFilter, onDragEnd, disableDrop } = props;
+
+    const handleDragEnd = ({ source, destination }: DropResult) => {
+        if (!destination) {
+            return;
+        }
+        onDragEnd(tasks[source.index].id, tasks[destination.index].id);
+    };
+
     const renderTasks = () => {
         if (!tasks.length) {
             return <p className="text-muted">No se han agregado tareas</p>;
         }
         return tasks.map((task, i) => {
             return (
-                <TaskListItem
-                    {...task}
-                    key={task.id}
-                    onSelect={onSelectTask}
-                    active={task.id === activeTaskId}
-                />
+                <Draggable key={task.id} draggableId={task.id} index={i}>
+                    {(provided, snapshot) => (
+                        <TaskListItem
+                            {...task}
+                            key={task.id}
+                            innerRef={provided.innerRef}
+                            provided={provided}
+                            onSelect={onSelectTask}
+                            active={task.id === activeTaskId}
+                        />
+                    )}
+                </Draggable>
             );
         })
     };
 
     return (
         <Card className="task-list">
-            <Card.Header className="task-list__header d-flex align-items-center">
+            <Card.Header className="task-list__header d-flex align-items-center bg-light border-0">
                 <span>{title}</span>
-                <Dropdown className="ml-auto">
-                    <Dropdown.Toggle
-                        variant="secondary"
-                        size="sm"
-                        className="text-dark bg-white"
-                        id="dropdown-duration">
-                        Duración
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Cualquiera</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Cortas</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Medianas</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Largas</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                <TaskFilterList
+                    filters={TaskFilterOptions}
+                    currentFilter={currentFilter}
+                    onPressFilter={onPressFilter}
+                />
             </Card.Header>
 
-            <Card.Body>
-                <ListGroup className="task-list__body border-0">
-                    {renderTasks()}
-                </ListGroup>
+            <Card.Body className="bg-light">
+                <DragDropContext onDragEnd={handleDragEnd}>
+                    <Droppable isDropDisabled={disableDrop || false} droppableId="droppable">
+                        {provided => (
+                            <div {...provided.droppableProps} ref={provided.innerRef}>
+                                <ListGroup className="task-list__body border-0">
+                                    {renderTasks()}
+                                </ListGroup>
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
             </Card.Body>
         </Card>
     );

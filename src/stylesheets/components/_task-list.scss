@@ -4,8 +4,19 @@
   }
 
   &__body {
-    height: 20rem;
+    min-height: 15rem;
+    max-height: 30rem;
     overflow-y: auto;
+    padding: 0 1rem;
+  }
+
+  &__item {
+    box-shadow: 4px 2px 5px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      cursor: pointer;
+      background-color: transparentize(#000, .95);
+    }
   }
 
   &__duration {
