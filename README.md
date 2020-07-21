@@ -2,10 +2,11 @@
 
 Aplicación web desarrollada para medir la productividad de los usuarios mediante la administración de tareas.
 
+![Vista Previa](productivity-preview.png)
 
 ## Introducción
 
-El presente repositorio contiene la aplicación web de productividad realizada para el proceso de selección de ArkonData.
+El presente repositorio contiene una aplicación web que permite a los usuarios medir su productividad.
 
 Sigue las siguientes instrucciones para obtener una copia del proyecto y ejecutarlo en tu ordenador para desarrollo y/o pruebas de evaluación.
 
@@ -33,11 +34,11 @@ Una vez obtenida la copia del proyecto se debe proceder a instalar las dependenc
 $ yarn install
 ```
 
-Al finalizar esta última operación, el entorno se encontrará listo para ser ejecutado.
+Al finalizar la instalación, el entorno se encontrará listo para ser ejecutado.
 
 ### Ejecución
 
-Una vez realizada la instalación, es posible iniciar el entorno de desarrollo ejecutando el comando:
+Es posible iniciar el entorno de desarrollo ejecutando el comando:
 
 ```
 $ yarn start
