@@ -25,7 +25,7 @@ El entorno de desarrollo del proyecto está configurado para ser utilizado con *
 Primero es necesario obtener una copia del proyecto. Si cuentas con alguna versión de *git* clona el repositorio con:
 
 ```
-$ git clone origin https://github.com/0xELJ/productivity-app.git
+$ git clone https://github.com/0xELJ/productivity-app.git
 ```
 
 Una vez obtenida la copia del proyecto se debe proceder a instalar las dependencias necesarias para ejecutar el entorno de desarrollo:
