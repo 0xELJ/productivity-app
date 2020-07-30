@@ -1,17 +1,19 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { useGlobalState } from '../hooks/useGlobalState';
+import { useActions } from '../hooks/useActions';
 import Icon from '@mdi/react';
 import { mdiPlay, mdiPause, mdiRefresh, mdiStop } from '@mdi/js';
-import { connect } from 'react-redux';
 import { Task } from '../types/Task';
 import { formatTaskTime } from '../utils/formatTaskTime';
 import activeTaskSelector from '../selectors/activeTaskSelector';
 import { TaskTime } from '../types/TaskTime';
 import { useInterval } from '../hooks/useInterval';
 import { completeTask, updateTask } from '../actions/tasks';
-import { TaskTimerProps } from '../types/TaskTimerProps';
 
-const TaskTimer: FC<TaskTimerProps> = ({ activeTask, finishTask, patchTask }) => {
+const TaskTimer: FC = () => {
+    const activeTask = useGlobalState(activeTaskSelector);
+    const [finishTask, patchTask] = useActions([completeTask, updateTask], []);
     const [taskTime, setTaskTime] = useState<TaskTime>({hours: 0, minutes: 0, seconds: 0 });
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
@@ -95,9 +97,4 @@ const TaskTimer: FC<TaskTimerProps> = ({ activeTask, finishTask, patchTask }) =>
     );
 };
 
-const mapStateToProps = (state: { tasks: Task[] }) => ({ activeTask: activeTaskSelector(state) });
-
-export default connect(mapStateToProps, {
-    finishTask: completeTask,
-    patchTask: updateTask
-})(TaskTimer);
+export default TaskTimer;

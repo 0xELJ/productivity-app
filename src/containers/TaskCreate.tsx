@@ -2,14 +2,15 @@ import React, { FC } from 'react';
 import TaskForm from '../components/task/TaskForm';
 import { Button, Modal } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
-import { connect } from 'react-redux';
+import { useActions } from '../hooks/useActions';
+import { createTask } from '../actions/tasks';
 import { TaskFormValues } from '../types/TaskFormValues';
 import { Task } from '../types/Task';
-import { createTask } from '../actions/tasks';
 import { TaskCreateProps } from '../types/TaskCreateProps';
 
-const TaskCreate: FC<TaskCreateProps> = ({ show, handleClose, addTask }) => {
+const TaskCreate: FC<TaskCreateProps> = ({ show, handleClose }) => {
     const taskFormId = 'taskForm';
+    const addTask = useActions(createTask, []);
 
     const handleSubmitEvent = () => {
         const taskForm = document.getElementById(taskFormId) as HTMLFormElement;
@@ -50,4 +51,4 @@ const TaskCreate: FC<TaskCreateProps> = ({ show, handleClose, addTask }) => {
     );
 };
 
-export default connect(null, { addTask: createTask })(TaskCreate);
+export default TaskCreate;
