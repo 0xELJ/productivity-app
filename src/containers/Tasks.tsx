@@ -1,18 +1,27 @@
 import React, { FC, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import { useGlobalState } from '../hooks/useGlobalState';
+import { useActions } from '../hooks/useActions';
+import completedTasksSelector from '../selectors/completedTasksSelector';
+import pendingTasksSelector from '../selectors/pendingTasksSelector';
+import activeTaskSelector from '../selectors/activeTaskSelector';
 import TaskList from '../components/task/TaskList';
 import TaskCreate from './TaskCreate';
 import TaskDetails from './TaskDetails';
 import { reorderTasks, selectTask, setCompletedTasksFilter, setPendingTasksFilter } from '../actions/tasks';
-import { TasksProps } from '../types/TasksProps';
-import { Task } from '../types/Task';
 import { TaskFilters } from '../constants/TaskFilters';
-import completedTasksSelector from '../selectors/completedTasksSelector';
-import pendingTasksSelector from '../selectors/pendingTasksSelector';
-import activeTaskSelector from '../selectors/activeTaskSelector';
 
-const Tasks: FC<TasksProps> = props => {
+const Tasks: FC = () => {
+    const pendingTasks = useGlobalState(pendingTasksSelector);
+    const completedTasks = useGlobalState(completedTasksSelector);
+    const activeTask = useGlobalState(activeTaskSelector);
+    const filters = useGlobalState(({ filters }) => filters);
+    const [setSelectedTask, setPendingFilter, setCompletedFilter, reorderTaskList] = useActions([
+        selectTask,
+        setPendingTasksFilter,
+        setCompletedTasksFilter,
+        reorderTasks
+    ], []);
     const [showCreateTask, setShowCreateTask] = useState(false);
     const [showTaskDetails, setShowTaskDetails] = useState(false);
 
@@ -26,19 +35,19 @@ const Tasks: FC<TasksProps> = props => {
 
     const handleSelectTask = (id: string) => {
         toggleTaskDetails();
-        props.setSelectedTask(id);
+        setSelectedTask(id);
     };
 
     const handlePressPendingFilter = (filter: TaskFilters) => {
-        props.setPendingFilter(filter);
+        setPendingFilter(filter);
     };
 
     const handlePressCompletedFilter = (filter: TaskFilters) => {
-        props.setCompletedFilter(filter);
+        setCompletedFilter(filter);
     };
 
     const handleDrag = (startId: string, endId: string) => {
-        props.reorderTaskList(startId, endId);
+        reorderTaskList(startId, endId);
     };
 
     return (
@@ -49,22 +58,22 @@ const Tasks: FC<TasksProps> = props => {
                     <Col md="6" className="mb-4">
                         <TaskList
                             title="Tareas pendientes"
-                            tasks={props.pendingTasks}
+                            tasks={pendingTasks}
                             onDragEnd={handleDrag}
                             onSelectTask={handleSelectTask}
                             onPressFilter={handlePressPendingFilter}
-                            currentFilter={props.pendingFilter}
-                            activeTaskId={props.activeTaskId}
+                            currentFilter={filters.pendingFilter}
+                            activeTaskId={activeTask?.id}
                         />
                     </Col>
                     <Col md="6" className="mb-5">
                         <TaskList
                             title="Tareas completadas"
-                            tasks={props.completedTasks}
+                            tasks={completedTasks}
                             onDragEnd={handleDrag}
                             onSelectTask={handleSelectTask}
                             onPressFilter={handlePressCompletedFilter}
-                            currentFilter={props.completedFilter}
+                            currentFilter={filters.completedFilter}
                             disableDrop={true}
                         />
                     </Col>
@@ -76,19 +85,4 @@ const Tasks: FC<TasksProps> = props => {
     );
 };
 
-const mapStateToProps = (state: { tasks: Task[], filters: { completedFilter: TaskFilters, pendingFilter: TaskFilters } }) => {
-    return {
-        pendingTasks: pendingTasksSelector(state),
-        completedTasks: completedTasksSelector(state),
-        pendingFilter: state.filters.pendingFilter,
-        completedFilter: state.filters.completedFilter,
-        activeTaskId: activeTaskSelector(state)?.id,
-    };
-};
-
-export default connect(mapStateToProps, {
-    setSelectedTask: selectTask,
-    setPendingFilter: setPendingTasksFilter,
-    setCompletedFilter: setCompletedTasksFilter,
-    reorderTaskList: reorderTasks
-})(Tasks);
+export default Tasks;

@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
 import { Nav, NavDropdown } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import { useActions } from '../hooks/useActions';
 import { fetchTasks } from '../actions/tasks';
 import { removeItem } from '../utils/LocalStorage';
 import { StorageKeys } from '../constants/StorageKeys';
 
-const TaskSettings: FC<{ getTasks(): any }> = props => {
+const TaskSettings: FC = () => {
+    const getTasks = useActions(fetchTasks, []);
+
     const onGetTasks = () => {
-        props.getTasks();
+        getTasks();
     };
 
     const onCleanTasks = () => {
@@ -25,4 +27,4 @@ const TaskSettings: FC<{ getTasks(): any }> = props => {
     );
 };
 
-export default connect(null, { getTasks: fetchTasks })(TaskSettings);
+export default TaskSettings;
