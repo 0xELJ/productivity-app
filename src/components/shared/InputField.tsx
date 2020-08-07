@@ -20,7 +20,7 @@ const InputField: FC<Input> = ({ name, label, hideLabel, placeholder, inputType,
 
     return (
         <div className="mb-3">
-            <InputGroup className="flex-column ">
+            <InputGroup className="flex-column">
                 {renderLabel()}
                 <FormControl
                     {...input}

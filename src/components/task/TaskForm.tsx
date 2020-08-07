@@ -10,9 +10,10 @@ import {
     required
 } from '../../utils/formValidator';
 import { validateDuration } from '../../utils/taskValidator';
-import { TaskFormProps } from '../../types/TaskFormProps';
+import { FormProps } from '../../types/FormProps';
+import { TaskFormValues } from '../../types/TaskFormValues';
 
-const TaskForm: FC<TaskFormProps> = ({ id, onSubmit, initialValues, disabled }) => {
+const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, disabled }) => {
     const timeValidations = [required, mustBeNumber, minValue(0)];
 
     return (

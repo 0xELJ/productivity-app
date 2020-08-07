@@ -8,7 +8,7 @@ import RouteGenerator from '../shared/RouteGenerator';
 const Home: FC<{ routes: NavRoute[] }> = ({ routes }) => {
     return (
         <>
-            <Header />
+            <Header routes={routes} />
                 <Switch>
                     <RouteGenerator routes={routes} />
                 </Switch>
