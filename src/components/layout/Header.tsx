@@ -10,8 +10,8 @@ const Header: FC<any> = () => {
             <Navbar.Toggle />
             <Navbar.Collapse className="ml-3">
                 <Nav>
-                    <Nav.Link as={Link} to="/tareas">Tareas</Nav.Link>
-                    <Nav.Link as={Link} to="/reportes">Reportes</Nav.Link>
+                    <Nav.Link as={Link} to="/app">Tareas</Nav.Link>
+                    <Nav.Link as={Link} to="/app/reports">Reportes</Nav.Link>
                 </Nav>
                 <TaskSettings />
             </Navbar.Collapse>
