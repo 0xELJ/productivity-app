@@ -5,10 +5,12 @@ import { Provider } from 'react-redux';
 import { getItem, setItem } from './utils/LocalStorage';
 import { StorageKeys } from './constants/StorageKeys';
 import throttle from 'lodash/throttle';
-import thunk from 'redux-thunk';
+import ReduxThunk from 'redux-thunk';
+import axios from 'axios';
+import { HttpMiddleware } from './middlewares/HttpMiddleware';
 
 const persistedState = getItem(StorageKeys.TASKS);
-const store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
+const store = createStore(rootReducer, persistedState, applyMiddleware(ReduxThunk, HttpMiddleware(axios)));
 
 store.subscribe(throttle(() => {
     setItem(StorageKeys.TASKS, {

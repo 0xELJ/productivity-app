@@ -1,4 +1,4 @@
-import { Action } from '../types/Action';
+import { SyncAction } from '../types/SyncAction';
 import { TaskFilters } from '../constants/TaskFilters';
 import { ActionTypes } from '../constants/ActionTypes';
 
@@ -7,7 +7,7 @@ const INITIAL_STATE: { pendingFilter: TaskFilters, completedFilter: TaskFilters 
     completedFilter: TaskFilters.SHOW_ALL,
 };
 
-export function taskFiltersReducer(state = INITIAL_STATE, action: Action) {
+export function taskFiltersReducer(state = INITIAL_STATE, action: SyncAction) {
     switch (action.type) {
         case ActionTypes.TASKS_PENDING_SET_FILTER:
             return {

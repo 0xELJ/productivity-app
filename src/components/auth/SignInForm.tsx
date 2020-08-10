@@ -9,7 +9,7 @@ const SignInForm: FC<FormProps<any>> = ({ id, onSubmit }) => (
     <Form
         onSubmit={onSubmit}
         render={({ handleSubmit }) => (
-            <form id={id} onSubmit={handleSubmit} >
+            <form id={id} onSubmit={handleSubmit}>
                 <Field
                     name="username"
                     component={InputField}
@@ -26,7 +26,7 @@ const SignInForm: FC<FormProps<any>> = ({ id, onSubmit }) => (
                     hideLabel={true}
                     validate={required}
                 />
-                <Button type="submit" size="lg" className="mt-5">
+                <Button type="submit" size="lg" className="mt-3">
                     LOGIN
                 </Button>
             </form>
