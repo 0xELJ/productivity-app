@@ -4,8 +4,9 @@ import { FormProps } from '../../types/FormProps';
 import InputField from '../shared/InputField';
 import { required } from '../../utils/formValidator';
 import { Button } from 'react-bootstrap';
+import { AuthCredentials } from '../../types/AuthCredentials';
 
-const SignInForm: FC<FormProps<any>> = ({ id, onSubmit }) => (
+const SignInForm: FC<FormProps<AuthCredentials>> = ({ id, onSubmit }) => (
     <Form
         onSubmit={onSubmit}
         render={({ handleSubmit }) => (
@@ -14,7 +15,6 @@ const SignInForm: FC<FormProps<any>> = ({ id, onSubmit }) => (
                     name="username"
                     component={InputField}
                     placeholder="Username"
-                    className="p-2"
                     hideLabel={true}
                     validate={required}
                 />
@@ -22,7 +22,7 @@ const SignInForm: FC<FormProps<any>> = ({ id, onSubmit }) => (
                     name="password"
                     component={InputField}
                     placeholder="Password"
-                    className="p-2"
+                    inputType="password"
                     hideLabel={true}
                     validate={required}
                 />

@@ -1,8 +1,10 @@
 import { Middleware } from 'redux';
 import { AxiosInstance } from 'axios';
 import { AsyncAction } from '../types/AsyncAction';
-import { getItem } from '../utils/LocalStorage';
 import { StorageKeys } from '../constants/StorageKeys';
+import { getItem } from '../utils/LocalStorage';
+
+const BASE_URL = 'http://localhost:5000';
 
 export const HttpMiddleware = (axios: AxiosInstance): Middleware => api => next => action => {
     if (typeof action === 'function') {
@@ -19,7 +21,11 @@ export const HttpMiddleware = (axios: AxiosInstance): Middleware => api => next 
     next({ ...rest, type: PENDING });
 
     let authData = getItem(StorageKeys.AUTH);
-    let requestConfig = { ...request, headers: { Authorization: `Bearer: ${authData.token}` } };
+    let requestConfig = {
+        ...request,
+        headers: { Authorization: `Bearer ${authData?.token}` },
+        baseURL: BASE_URL
+    };
 
     if (options?.excludeToken) {
         delete requestConfig.headers.Authorization;
@@ -27,7 +33,7 @@ export const HttpMiddleware = (axios: AxiosInstance): Middleware => api => next 
 
     return axios.request(requestConfig)
         .then(result => {
-            return next({ ...rest, payload: result, type: SUCCESS });
+            return next({ ...rest, payload: result.data, type: SUCCESS });
         })
         .catch(error => {
             console.error('MIDDLEWARE ERROR', error);

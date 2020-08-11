@@ -3,6 +3,8 @@ import { FormControl, InputGroup } from 'react-bootstrap';
 import { Input } from '../../types/InputField';
 
 const InputField: FC<Input> = ({ name, label, hideLabel, placeholder, inputType, className, input, meta}) => {
+    const inputClass = `p-2 ${className || ''}`;
+
     const renderLabel = () => {
         if (!hideLabel) {
             return <label className="mb-2">{label + ':'}</label>;
@@ -26,7 +28,7 @@ const InputField: FC<Input> = ({ name, label, hideLabel, placeholder, inputType,
                     {...input}
                     placeholder={placeholder}
                     type={inputType || 'text'}
-                    className={className || ''}
+                    className={inputClass}
                 />
             </InputGroup>
             {renderError()}
