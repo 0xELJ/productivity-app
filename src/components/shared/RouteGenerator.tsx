@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import { Route, RouteProps } from 'react-router-dom';
 import { NavRoute } from '../../types/NavRoute';
+import PrivateRoute from './PrivateRoute';
 
-const RouteGenerator: FC<{ routes: NavRoute[] }> = ({ routes }) => {
+const RouteGenerator: FC<{ routes: NavRoute[], isAuthenticated?: boolean }> = ({ routes, isAuthenticated }) => {
     const getRouteProps = (route: NavRoute) => {
         const { path, component: Component, exact, props } = route;
         let routeProps: RouteProps = { path, exact };
@@ -25,6 +26,16 @@ const RouteGenerator: FC<{ routes: NavRoute[] }> = ({ routes }) => {
             {
                 routes.map(route => {
                     let routeProps: RouteProps = getRouteProps(route);
+                    if (route.isPrivate) {
+                        return (
+                            <PrivateRoute
+                                key={route.path}
+                                {...routeProps}
+                                isAuthenticated={!!isAuthenticated}
+                                unauthorizedPath="/login"
+                            />
+                        );
+                    }
                     return <Route key={route.path} {...routeProps} />;
                 })
             }

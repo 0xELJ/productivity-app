@@ -6,4 +6,5 @@ export interface NavRoute {
     component: FunctionComponent<any>;
     exact?: boolean;
     props?: { [key: string]: any };
+    isPrivate?: boolean;
 }

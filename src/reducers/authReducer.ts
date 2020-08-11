@@ -14,7 +14,7 @@ export const authReducer = (state = INITIAL_STATE, action: SyncAction) => {
         case ActionTypes.AUTH_LOGIN_PENDING:
             return { status: RequestStatus.PENDING, token: '' };
         case ActionTypes.AUTH_LOGIN_SUCCESS:
-            setItem(StorageKeys.AUTH, { token: action.payload.accessToken });
+            setItem(StorageKeys.AUTH, { token: action.payload.accessToken, authenticated: true });
             return { status: RequestStatus.SUCCESSFUL, token: action.payload.accessToken };
         case ActionTypes.AUTH_LOGIN_ERROR:
             return { status: RequestStatus.FAILED, token: '' };

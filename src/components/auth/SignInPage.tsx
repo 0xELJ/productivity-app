@@ -15,7 +15,6 @@ const SignInPage: FC = () => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log('AuthStatus: ', authStatus);
         if (authStatus === RequestStatus.SUCCESSFUL) {
             history.push('/app');
         }
