@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo-dark.png';
 import SignInForm from './SignInForm';
 import { useActions } from '../../hooks/useActions';
@@ -10,15 +10,18 @@ import { useGlobalState } from '../../hooks/useGlobalState';
 import { RequestStatus } from '../../constants/RequestStatus';
 
 const SignInPage: FC = () => {
-    const authStatus = useGlobalState(({ auth }) => auth.status);
+    const auth = useGlobalState(({ auth }) => auth);
     const login = useActions(signIn, []);
     const history = useHistory();
+    const location = useLocation<{ from: { pathname: string } }>();
 
     useEffect(() => {
-        if (authStatus === RequestStatus.SUCCESSFUL) {
-            history.push('/app');
+        const { from } = location.state || { from: { pathname: '/app' } };
+
+        if (auth.status === RequestStatus.SUCCESSFUL || auth.authenticated) {
+            history.replace(from);
         }
-    }, [authStatus, history]);
+    }, [auth, history, location.state]);
 
     const onSignIn = (credentials: AuthCredentials) => {
         login(credentials);

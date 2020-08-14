@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
 import { NavRoute } from './types/NavRoute';
 import { Root } from './Root';
@@ -8,11 +8,8 @@ import Home from './components/layout/Home';
 import Tasks from './containers/Tasks';
 import Reports from './containers/Reports';
 import RouteGenerator from './components/shared/RouteGenerator';
-import { getItem } from './utils/LocalStorage';
-import { StorageKeys } from './constants/StorageKeys';
 
 function App() {
-    const [userAuthenticated, setUserAuthenticated] = useState<boolean>(false);
     const [routes] = useState<NavRoute[]>([
         {
             name: 'Login',
@@ -47,17 +44,12 @@ function App() {
         }
     ]);
 
-    useEffect(() => {
-        const authData = getItem(StorageKeys.AUTH);
-        setUserAuthenticated(authData?.authenticated);
-    }, []);
-
     return (
         <Root>
             <Router>
                 <Switch>
                     <Redirect exact from="/" to="/login" />
-                    <RouteGenerator routes={routes} isAuthenticated={userAuthenticated} />
+                    <RouteGenerator routes={routes} />
                 </Switch>
             </Router>
         </Root>
