@@ -8,6 +8,7 @@ import Home from './components/layout/Home';
 import Tasks from './containers/Tasks';
 import Reports from './containers/Reports';
 import RouteGenerator from './components/shared/RouteGenerator';
+import AlertGenerator from './components/shared/AlertGenerator';
 
 function App() {
     const [routes] = useState<NavRoute[]>([
@@ -46,6 +47,7 @@ function App() {
 
     return (
         <Root>
+            <AlertGenerator />
             <Router>
                 <Switch>
                     <Redirect exact from="/" to="/login" />

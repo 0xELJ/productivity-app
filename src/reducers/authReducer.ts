@@ -3,13 +3,14 @@ import { SyncAction } from '../types/SyncAction';
 import { ActionTypes } from '../constants/ActionTypes';
 import { removeItem, setItem } from '../utils/LocalStorage';
 import { StorageKeys } from '../constants/StorageKeys';
+import { AuthState } from '../types/AuthState';
 
-const INITIAL_STATE = {
+const INITIAL_STATE: AuthState = {
     status: RequestStatus.INACTIVE,
     authenticated: false
 };
 
-export const authReducer = (state = INITIAL_STATE, action: SyncAction) => {
+export const authReducer = (state = INITIAL_STATE, action: SyncAction): AuthState => {
     switch (action.type) {
         case ActionTypes.AUTH_LOGIN_PENDING:
             return { ...state, status: RequestStatus.PENDING };

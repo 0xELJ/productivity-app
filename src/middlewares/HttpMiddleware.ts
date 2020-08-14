@@ -3,6 +3,7 @@ import { AxiosInstance } from 'axios';
 import { AsyncAction } from '../types/AsyncAction';
 import { StorageKeys } from '../constants/StorageKeys';
 import { getItem } from '../utils/LocalStorage';
+import { ActionTypes } from '../constants/ActionTypes';
 
 const BASE_URL = 'http://localhost:5000';
 
@@ -37,6 +38,8 @@ export const HttpMiddleware = (axios: AxiosInstance): Middleware => api => next 
         })
         .catch(error => {
             console.error('MIDDLEWARE ERROR', error);
+            const { error: heading, message: description } = error.response.data;
+            next({ type: ActionTypes.ALERT_SHOW, payload: { variant: 'danger', heading , description } });
             return next({ ...rest, error, type: ERROR });
         })
 };
