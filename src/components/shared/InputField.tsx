@@ -15,7 +15,7 @@ const InputField: FC<Input> = ({ name, label, hideLabel, placeholder, inputType,
     const renderError = () => {
         const { touched, error } = meta;
         if (error && touched) {
-            return <p className="text-danger mb-0">{error}</p>;
+            return <p className="text-danger text-left mb-0">{error}</p>;
         }
         return null;
     };

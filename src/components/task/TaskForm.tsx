@@ -14,7 +14,7 @@ import { FormProps } from '../../types/FormProps';
 import { TaskFormValues } from '../../types/TaskFormValues';
 
 const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, disabled }) => {
-    const timeValidations = [required, mustBeNumber, minValue(0)];
+    const timeValidations = (name: string) => [required(name), mustBeNumber, minValue(0)];
 
     return (
         <Form
@@ -27,20 +27,20 @@ const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, 
                         <Field
                             name="name"
                             component={InputField}
-                            label="Nombre"
-                            placeholder="Nombre"
-                            validate={required}
+                            label="Name"
+                            placeholder="Name"
+                            validate={required('Name')}
                         />
                         <Field
                             name="description"
                             component={InputField}
-                            label="Descripción"
-                            placeholder="Descripción"
-                            validate={required}
+                            label="Description"
+                            placeholder="Description"
+                            validate={required('Description')}
                         />
                     </fieldset>
                     <fieldset disabled={disabled}>
-                        <label>Duración:</label>
+                        <label>Duration:</label>
                         <div className="w-100 d-flex">
                             <Field
                                 name="hours"
@@ -49,7 +49,7 @@ const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, 
                                 placeholder="hh"
                                 inputType="number"
                                 parse={parseToNumber}
-                                validate={composeValidators(...timeValidations, maxValue(2))}
+                                validate={composeValidators(...timeValidations('Hours'), maxValue(2))}
                             />
                             <span className="mx-1">:</span>
                             <Field
@@ -59,7 +59,7 @@ const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, 
                                 placeholder="mm"
                                 inputType="number"
                                 parse={parseToNumber}
-                                validate={composeValidators(...timeValidations, maxValue(59))}
+                                validate={composeValidators(...timeValidations('Minutes'), maxValue(59))}
                             />
                             <span className="mx-1">:</span>
                             <Field
@@ -69,7 +69,7 @@ const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, 
                                 placeholder="ss"
                                 inputType="number"
                                 parse={parseToNumber}
-                                validate={composeValidators(...timeValidations, maxValue(59))}
+                                validate={composeValidators(...timeValidations('Seconds'), maxValue(59))}
                             />
                         </div>
                     </fieldset>

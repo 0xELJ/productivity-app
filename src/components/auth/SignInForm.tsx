@@ -16,7 +16,7 @@ const SignInForm: FC<FormProps<AuthCredentials>> = ({ id, onSubmit }) => (
                     component={InputField}
                     placeholder="Username"
                     hideLabel={true}
-                    validate={required}
+                    validate={required('Username')}
                 />
                 <Field
                     name="password"
@@ -24,11 +24,9 @@ const SignInForm: FC<FormProps<AuthCredentials>> = ({ id, onSubmit }) => (
                     placeholder="Password"
                     inputType="password"
                     hideLabel={true}
-                    validate={required}
+                    validate={required('Password')}
                 />
-                <Button type="submit" size="lg" className="mt-3">
-                    LOGIN
-                </Button>
+                <Button type="submit" size="lg" className="mt-5">LOGIN</Button>
             </form>
         )}
     />

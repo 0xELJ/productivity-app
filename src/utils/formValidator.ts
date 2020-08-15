@@ -1,23 +1,25 @@
-export function required(value?: any): undefined | string {
-    return (value || value === 0) ? undefined : 'Campo requerido';
+export function required(fieldName: string): (value: string | number) => undefined | string {
+    return function (value: string | number) {
+        return (value || value === 0) ? undefined : `${fieldName} is required`;
+    }
 }
 
 export function mustBeNumber(value?: any): undefined | string {
     const number = parseInt(value);
-    return isNaN(number) ? 'El valor debe ser númerico': undefined;
+    return isNaN(number) ? 'The value must be numeric': undefined;
 }
 
 export function minValue(min: number): (value: string) => undefined | string {
     return function(value: string) {
         const number = parseInt(value);
-        return isNaN(number) || number >= min ? undefined : 'El valor debe ser mayor a ' + min;
+        return isNaN(number) || number >= min ? undefined : 'Value must be greater than ' + min;
     };
 }
 
 export function maxValue(max: number): (value: string) => undefined | string {
     return function (value: string) {
         const number = parseInt(value);
-        return isNaN(number) || number <= max ? undefined : 'El valor debe ser menor a ' + max;
+        return isNaN(number) || number <= max ? undefined : 'Value must be less than ' + max;
     }
 }
 
