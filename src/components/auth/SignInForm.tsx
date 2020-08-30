@@ -3,10 +3,10 @@ import { Field, Form } from 'react-final-form';
 import { FormProps } from '../../types/FormProps';
 import InputField from '../shared/InputField';
 import { required } from '../../utils/formValidator';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { AuthCredentials } from '../../types/AuthCredentials';
 
-const SignInForm: FC<FormProps<AuthCredentials>> = ({ id, onSubmit }) => (
+const SignInForm: FC<FormProps<AuthCredentials>> = ({ id, onSubmit, submitting }) => (
     <Form
         onSubmit={onSubmit}
         render={({ handleSubmit }) => (
@@ -26,7 +26,9 @@ const SignInForm: FC<FormProps<AuthCredentials>> = ({ id, onSubmit }) => (
                     hideLabel={true}
                     validate={required('Password')}
                 />
-                <Button type="submit" size="lg" className="mt-5">LOGIN</Button>
+                <Button type="submit" size="lg" className="mt-5" disabled={submitting}>
+                    {submitting ? <Spinner animation="border" variant="light" /> : 'LOGIN'}
+                </Button>
             </form>
         )}
     />

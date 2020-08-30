@@ -6,19 +6,26 @@ import { StorageKeys } from '../constants/StorageKeys';
 import { AuthState } from '../types/AuthState';
 
 const INITIAL_STATE: AuthState = {
-    status: RequestStatus.INACTIVE,
-    authenticated: false
+    signUpStatus: RequestStatus.INACTIVE,
+    signInStatus: RequestStatus.INACTIVE,
+    authenticated: false,
 };
 
 export const authReducer = (state = INITIAL_STATE, action: SyncAction): AuthState => {
     switch (action.type) {
+        case ActionTypes.AUTH_SIGN_UP_PENDING:
+            return { ...state, signUpStatus: RequestStatus.PENDING };
+        case ActionTypes.AUTH_SIGN_UP_SUCCESS:
+            return { ...state, signUpStatus: RequestStatus.SUCCESSFUL };
+        case ActionTypes.AUTH_SIGN_UP_ERROR:
+            return { ...state, signUpStatus: RequestStatus.FAILED };
         case ActionTypes.AUTH_LOGIN_PENDING:
-            return { ...state, status: RequestStatus.PENDING };
+            return { ...state, signInStatus: RequestStatus.PENDING };
         case ActionTypes.AUTH_LOGIN_SUCCESS:
             setItem(StorageKeys.AUTH, { token: action.payload.accessToken, authenticated: true });
-            return { status: RequestStatus.SUCCESSFUL, authenticated: true };
+            return { ...state, signInStatus: RequestStatus.SUCCESSFUL, authenticated: true };
         case ActionTypes.AUTH_LOGIN_ERROR:
-            return { ...state, status: RequestStatus.FAILED };
+            return { ...state, signInStatus: RequestStatus.FAILED };
         case ActionTypes.AUTH_LOGOUT:
             removeItem(StorageKeys.AUTH);
             return INITIAL_STATE;

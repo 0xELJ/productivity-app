@@ -37,8 +37,10 @@ export const HttpMiddleware = (axios: AxiosInstance): Middleware => api => next 
             return next({ ...rest, payload: result.data, type: SUCCESS });
         })
         .catch(error => {
-            console.error('MIDDLEWARE ERROR', error);
-            const { error: heading, message: description } = error.response.data;
+            let { error: heading, message: description } = error.response.data;
+            if (Array.isArray(description) && description.length) {
+                description = description[0];
+            }
             next({ type: ActionTypes.ALERT_SHOW, payload: { variant: 'danger', heading , description } });
             return next({ ...rest, error, type: ERROR });
         })

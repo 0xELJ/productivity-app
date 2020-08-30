@@ -10,7 +10,7 @@ import { useGlobalState } from '../../hooks/useGlobalState';
 import { RequestStatus } from '../../constants/RequestStatus';
 
 const SignInPage: FC = () => {
-    const auth = useGlobalState(({ auth }) => auth);
+    const { signInStatus, authenticated } = useGlobalState(({ auth }) => auth);
     const login = useActions(signIn, []);
     const history = useHistory();
     const location = useLocation<{ from: { pathname: string } }>();
@@ -18,10 +18,10 @@ const SignInPage: FC = () => {
     useEffect(() => {
         const { from } = location.state || { from: { pathname: '/app' } };
 
-        if (auth.status === RequestStatus.SUCCESSFUL || auth.authenticated) {
+        if (signInStatus === RequestStatus.SUCCESSFUL || authenticated) {
             history.replace(from);
         }
-    }, [auth, history, location.state]);
+    }, [signInStatus, authenticated, history, location.state]);
 
     const onSignIn = (credentials: AuthCredentials) => {
         login(credentials);
@@ -36,7 +36,11 @@ const SignInPage: FC = () => {
                             <img src={logo} alt="ANLEO Logo" className="logo logo--md my-5" />
                             <h4 className="text-uppercase mb-5">Login to your account</h4>
 
-                            <SignInForm id="login-form" onSubmit={onSignIn} />
+                            <SignInForm
+                                id="login-form"
+                                onSubmit={onSignIn}
+                                submitting={signInStatus === RequestStatus.PENDING}
+                            />
 
                             <h6 className="mt-5 mb-0">Don't you have an account?</h6>
                             <Link to="/new-account">Create an account</Link>

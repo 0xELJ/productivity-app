@@ -10,7 +10,13 @@ import { StorageKeys } from './constants/StorageKeys';
 import { RequestStatus } from './constants/RequestStatus';
 
 const auth = getItem(StorageKeys.AUTH);
-const persistedState = { auth: { status: RequestStatus.INACTIVE,  authenticated: auth?.authenticated } };
+const persistedState = {
+    auth: {
+        signUpStatus: RequestStatus.INACTIVE,
+        signInStatus: RequestStatus.INACTIVE,
+        authenticated: auth?.authenticated
+    }
+};
 const store = createStore(rootReducer, persistedState, applyMiddleware(ReduxThunk, HttpMiddleware(axios)));
 
 export const Root: FC = ({ children }) => {

@@ -1,6 +1,7 @@
 import { RequestStatus } from '../constants/RequestStatus';
 
 export interface AuthState {
-    status: RequestStatus;
+    signUpStatus: RequestStatus;
+    signInStatus: RequestStatus;
     authenticated: boolean;
 }
