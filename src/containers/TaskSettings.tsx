@@ -1,27 +1,20 @@
 import React, { FC } from 'react';
 import { Nav, NavDropdown } from 'react-bootstrap';
 import { useActions } from '../hooks/useActions';
-import { fetchTasks } from '../actions/tasks';
-import { removeItem } from '../utils/LocalStorage';
-import { StorageKeys } from '../constants/StorageKeys';
+import { signOut } from '../actions/auth';
 
 const TaskSettings: FC = () => {
-    const getTasks = useActions(fetchTasks, []);
+    const logout = useActions(signOut, []);
 
-    const onGetTasks = () => {
-        getTasks();
-    };
-
-    const onCleanTasks = () => {
-        removeItem(StorageKeys.TASKS);
-        window.location.reload();
+    const onLogout = () => {
+        logout();
     };
 
     return (
         <Nav className="ml-auto mr-3">
-            <NavDropdown title="Configuración " id="admin-dropdown">
-                <NavDropdown.Item onClick={onGetTasks}>Generar tareas</NavDropdown.Item>
-                <NavDropdown.Item onClick={onCleanTasks}>Borrar tareas</NavDropdown.Item>
+            <NavDropdown title="Account " id="admin-dropdown">
+                <NavDropdown.Item onClick={() => {}}>Settings</NavDropdown.Item>
+                <NavDropdown.Item onClick={onLogout}>Logout</NavDropdown.Item>
             </NavDropdown>
         </Nav>
     );

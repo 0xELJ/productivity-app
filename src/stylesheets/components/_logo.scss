@@ -1,0 +1,11 @@
+.logo {
+    width: auto;
+
+    &--sm {
+        height: 2.5rem;
+    }
+
+    &--md {
+        height: 3rem;
+    }
+}

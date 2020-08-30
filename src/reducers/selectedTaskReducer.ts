@@ -1,9 +1,9 @@
 import { ActionTypes } from '../constants/ActionTypes';
-import { Action } from '../types/Action';
+import { SyncAction } from '../types/SyncAction';
 
 const INITIAL_STATE: string = '';
 
-export function selectedTaskReducer(state = INITIAL_STATE, action: Action): string {
+export function selectedTaskReducer(state = INITIAL_STATE, action: SyncAction): string {
     switch (action.type) {
         case ActionTypes.TASK_SET_SELECTED:
             return action.payload;

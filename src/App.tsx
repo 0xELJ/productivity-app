@@ -1,24 +1,58 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Redirect, Switch } from 'react-router-dom';
+import { NavRoute } from './types/NavRoute';
+import { Root } from './Root';
+import SignInPage from './components/auth/SignInPage';
+import SignUpPage from './components/auth/SignUpPage';
+import Home from './components/layout/Home';
 import Tasks from './containers/Tasks';
 import Reports from './containers/Reports';
-import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
-import { Root } from './Root';
+import RouteGenerator from './components/shared/RouteGenerator';
+import AlertGenerator from './components/shared/AlertGenerator';
 
 function App() {
+    const [routes] = useState<NavRoute[]>([
+        {
+            name: 'Login',
+            path: '/login',
+            component: SignInPage
+        },
+        {
+            name: 'Create Account',
+            path: '/new-account',
+            component: SignUpPage
+        },
+        {
+            name: 'Home',
+            path: '/app',
+            component: Home,
+            isPrivate: true,
+            props: {
+                routes: [
+                    {
+                        name: 'Tasks',
+                        path: '/app',
+                        component: Tasks,
+                        exact: true
+                    },
+                    {
+                        name: 'Reports',
+                        path: '/app/reports',
+                        component: Reports,
+                    }
+                ]
+            }
+        }
+    ]);
+
     return (
         <Root>
+            <AlertGenerator />
             <Router>
-                <>
-                    <Header />
-                    <Switch>
-                        <Redirect exact from="/" to="/tareas" />
-                        <Route path="/tareas" component={Tasks} />
-                        <Route path="/reportes" component={Reports} />
-                    </Switch>
-                    <Footer />
-                </>
+                <Switch>
+                    <Redirect exact from="/" to="/login" />
+                    <RouteGenerator routes={routes} />
+                </Switch>
             </Router>
         </Root>
     );

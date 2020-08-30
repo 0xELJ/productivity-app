@@ -1,6 +1,6 @@
 import { ActionTypes } from '../constants/ActionTypes';
 
-export interface Action {
+export interface SyncAction {
     type: ActionTypes;
     payload?: any;
 }

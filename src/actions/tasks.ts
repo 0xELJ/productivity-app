@@ -1,56 +1,44 @@
-import { Action } from '../types/Action';
+import { SyncAction } from '../types/SyncAction';
 import { ActionTypes } from '../constants/ActionTypes';
 import { Task } from '../types/Task';
 import { TaskTime } from '../types/TaskTime';
 import { TaskFilters } from '../constants/TaskFilters';
 
-export function fetchTasks() {
-    return async function (dispatch: Function) {
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-        let fakeTodos = await response.json();
-        fakeTodos = fakeTodos.slice(0, 50);
-        dispatch({
-            type: ActionTypes.TASK_GET_RANDOM_LIST,
-            payload: fakeTodos
-        });
-    }
-}
-
-export function createTask(task: Task): Action {
+export function createTask(task: Task): SyncAction {
     return {
         type: ActionTypes.TASK_ADD_PENDING,
         payload: task,
     };
 }
 
-export function selectTask(id: string): Action {
+export function selectTask(id: string): SyncAction {
     return {
         type: ActionTypes.TASK_SET_SELECTED,
         payload: id
     };
 }
 
-export function resetSelectedTask(): Action {
+export function resetSelectedTask(): SyncAction {
     return {
         type: ActionTypes.TASK_REMOVE_SELECTED
     };
 }
 
-export function updateTask(task: Task): Action {
+export function updateTask(task: Task): SyncAction {
     return {
         type: ActionTypes.TASK_UPDATE_ITEM,
         payload: task
     };
 }
 
-export function deleteTask(taskId: string): Action {
+export function deleteTask(taskId: string): SyncAction {
     return {
         type: ActionTypes.TASK_DELETE_ITEM,
         payload: taskId
     };
 }
 
-export function completeTask(time: TaskTime): Action {
+export function completeTask(time: TaskTime): SyncAction {
     return {
         type: ActionTypes.TASK_COMPLETE_ACTIVE,
         payload: time
