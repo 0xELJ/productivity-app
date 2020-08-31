@@ -90,7 +90,7 @@ const TaskTimer: FC = () => {
                 {formatTaskTime(taskTime)}
             </p>
             <p className="footer__task mb-0 w-100 d-inline-block text-truncate">
-                <strong>{activeTask?.name || '-'}</strong>
+                <strong>{activeTask?.title || '-'}</strong>
             </p>
             <Button onClick={onComplete} className="ml-auto" size="sm" disabled={!activeTask}>Completar</Button>
         </div>

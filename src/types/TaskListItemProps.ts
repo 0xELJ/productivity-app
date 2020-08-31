@@ -3,7 +3,7 @@ import { DraggableProvided } from 'react-beautiful-dnd';
 
 export interface TaskListItemProps {
     id: string;
-    name: string;
+    title: string;
     description: string;
     durationTime: TaskTime;
     active: boolean;

@@ -23,8 +23,8 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
 
     const getFormValues = () => {
         if (task) {
-            const { name, description, durationTime: { hours, minutes, seconds } } = task;
-            return { name, description, hours, minutes, seconds };
+            const { title, description, durationTime: { hours, minutes, seconds } } = task;
+            return { title, description, hours, minutes, seconds };
         } else {
             return undefined;
         }
@@ -43,10 +43,10 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
 
     const updateTaskValues = (newValues: TaskFormValues) => {
         const { id, createdAt, active, enabled } = task as Task;
-        const { name, description, hours, minutes, seconds } = newValues;
+        const { title, description, hours, minutes, seconds } = newValues;
         return {
             id,
-            name,
+            title,
             description,
             durationTime: { hours, minutes, seconds },
             timeLeft: { hours, minutes, seconds },

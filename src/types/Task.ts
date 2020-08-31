@@ -1,12 +1,14 @@
 import { TaskTime } from './TaskTime';
+import { TaskStatus } from './TaskStatus';
 
 export interface Task {
     id: string;
-    name: string;
+    title: string;
     description: string;
     durationTime: TaskTime;
     timeLeft: TaskTime;
     createdAt: string;
-    active: boolean;
-    enabled: boolean;
+    status?: TaskStatus;
+    active?: boolean;
+    enabled?: boolean;
 }

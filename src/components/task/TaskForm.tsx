@@ -25,11 +25,11 @@ const TaskForm: FC<FormProps<TaskFormValues>> = ({ id, onSubmit, initialValues, 
                 <form id={id} onSubmit={handleSubmit}>
                     <fieldset disabled={disabled}>
                         <Field
-                            name="name"
+                            name="title"
                             component={InputField}
-                            label="Name"
-                            placeholder="Name"
-                            validate={required('Name')}
+                            label="Title"
+                            placeholder="Title"
+                            validate={required('Title')}
                         />
                         <Field
                             name="description"

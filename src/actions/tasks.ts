@@ -3,6 +3,21 @@ import { ActionTypes } from '../constants/ActionTypes';
 import { Task } from '../types/Task';
 import { TaskTime } from '../types/TaskTime';
 import { TaskFilters } from '../constants/TaskFilters';
+import { AsyncAction } from '../types/AsyncAction';
+
+export function fetchAllTasks(): AsyncAction {
+    return {
+        types: [
+            ActionTypes.TASK_FETCH_ALL_PENDING,
+            ActionTypes.TASK_FETCH_ALL_SUCCESS,
+            ActionTypes.TASK_FETCH_ALL_ERROR,
+        ],
+        request: {
+            method: 'GET',
+            url: '/tasks',
+        }
+    };
+}
 
 export function createTask(task: Task): SyncAction {
     return {

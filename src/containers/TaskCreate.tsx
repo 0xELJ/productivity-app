@@ -23,10 +23,10 @@ const TaskCreate: FC<TaskCreateProps> = ({ show, handleClose }) => {
         handleClose();
     };
 
-    const generateTask = ({ name, description, hours, minutes, seconds }: TaskFormValues): Task => {
+    const generateTask = ({ title, description, hours, minutes, seconds }: TaskFormValues): Task => {
         return {
             id: uuid(),
-            name,
+            title,
             description,
             durationTime: { hours, minutes, seconds},
             timeLeft: { hours, minutes, seconds},

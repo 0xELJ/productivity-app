@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useGlobalState } from '../hooks/useGlobalState';
 import { useActions } from '../hooks/useActions';
@@ -8,7 +8,13 @@ import activeTaskSelector from '../selectors/activeTaskSelector';
 import TaskList from '../components/task/TaskList';
 import TaskCreate from './TaskCreate';
 import TaskDetails from './TaskDetails';
-import { reorderTasks, selectTask, setCompletedTasksFilter, setPendingTasksFilter } from '../actions/tasks';
+import {
+    fetchAllTasks,
+    reorderTasks,
+    selectTask,
+    setCompletedTasksFilter,
+    setPendingTasksFilter
+} from '../actions/tasks';
 import { TaskFilters } from '../constants/TaskFilters';
 
 const Tasks: FC = () => {
@@ -16,7 +22,8 @@ const Tasks: FC = () => {
     const completedTasks = useGlobalState(completedTasksSelector);
     const activeTask = useGlobalState(activeTaskSelector);
     const filters = useGlobalState(({ filters }) => filters);
-    const [setSelectedTask, setPendingFilter, setCompletedFilter, reorderTaskList] = useActions([
+    const [getAllTasks, setSelectedTask, setPendingFilter, setCompletedFilter, reorderTaskList] = useActions([
+        fetchAllTasks,
         selectTask,
         setPendingTasksFilter,
         setCompletedTasksFilter,
@@ -24,6 +31,10 @@ const Tasks: FC = () => {
     ], []);
     const [showCreateTask, setShowCreateTask] = useState(false);
     const [showTaskDetails, setShowTaskDetails] = useState(false);
+
+    useEffect(() => {
+        getAllTasks();
+    }, [getAllTasks]);
 
     const toggleCreateTask = () => {
         setShowCreateTask(!showCreateTask);

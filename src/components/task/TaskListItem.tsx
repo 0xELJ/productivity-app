@@ -6,7 +6,7 @@ import { formatTaskTime } from '../../utils/formatTaskTime';
 import { TaskListItemProps } from '../../types/TaskListItemProps';
 
 const TaskListItem: FC<TaskListItemProps> = props => {
-    const { id, name, description, durationTime, active, onSelect, innerRef, provided } = props;
+    const { id, title, description, durationTime, active, onSelect, innerRef, provided } = props;
 
     const getTaskStyle = () => {
         const defaultClass = 'task-list__item d-flex justify-content-between mb-3 border-top rounded';
@@ -21,7 +21,7 @@ const TaskListItem: FC<TaskListItemProps> = props => {
         <div ref={innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <ListGroup.Item onClick={handleClick} className={getTaskStyle()}>
                 <div className="w-75">
-                    <Card.Title>{name}</Card.Title>
+                    <Card.Title>{title}</Card.Title>
                     <Card.Text className="w-100 d-inline-block text-truncate">{description}</Card.Text>
                 </div>
                 <div className="w-25 pl-1 align-self-end d-flex">
