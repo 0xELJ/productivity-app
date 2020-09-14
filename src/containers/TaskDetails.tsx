@@ -3,17 +3,28 @@ import { Button, Modal } from 'react-bootstrap';
 import TaskForm from '../components/task/TaskForm';
 import { TaskFormValues } from '../types/TaskFormValues';
 import { TaskDetailsProps } from '../types/TaskDetailsProps';
-import taskDetailsSelector from '../selectors/taskDetailsSelector';
-import { deleteTask, resetSelectedTask, updateTask } from '../actions/tasks';
+import { deleteTask, fetchTaskById, resetSelectedTask, updateTask } from '../actions/tasks';
 import Moment from 'react-moment';
 import { Task } from '../types/Task';
 import { useGlobalState } from '../hooks/useGlobalState';
 import { useActions } from '../hooks/useActions';
+import { TaskStatus } from '../types/TaskStatus';
 
 const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
-    const task = useGlobalState(taskDetailsSelector);
-    const [removeTask, resetTask, patchTask] = useActions([deleteTask, resetSelectedTask, updateTask], []);
+    const { selectedId, task } = useGlobalState(({ selectedTask }) => selectedTask);
+    const [getTask, removeTask, resetTask, patchTask] = useActions([
+        fetchTaskById,
+        deleteTask,
+        resetSelectedTask,
+        updateTask]
+    , []);
     const [taskFormId] = useState('taskForm');
+
+    useEffect(() => {
+        if (selectedId) {
+            getTask(selectedId);
+        }
+    }, [getTask, selectedId]);
 
     useEffect(() => {
        return () => {
@@ -42,7 +53,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
     };
 
     const updateTaskValues = (newValues: TaskFormValues) => {
-        const { id, createdAt, active, enabled } = task as Task;
+        const { id, createdAt, status } = task as Task;
         const { title, description, hours, minutes, seconds } = newValues;
         return {
             id,
@@ -51,8 +62,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
             durationTime: { hours, minutes, seconds },
             timeLeft: { hours, minutes, seconds },
             createdAt,
-            active,
-            enabled
+            status
         };
     };
 
@@ -63,7 +73,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
     };
 
     const allowUpdate = () => {
-        if (task?.enabled) {
+        if (task?.status !== TaskStatus.DONE) {
             return <Button onClick={handleSubmitEvent} variant="warning">Modificar</Button>;
         }
         return null;
@@ -79,7 +89,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
                     id={taskFormId}
                     onSubmit={onSubmit}
                     initialValues={getFormValues()}
-                    disabled={!task?.enabled}
+                    disabled={task?.status === TaskStatus.DONE}
                 />
                 <p className="mb-0">
                     <span className="font-weight-bold">Creada: </span>

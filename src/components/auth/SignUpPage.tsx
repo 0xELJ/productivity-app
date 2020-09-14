@@ -26,7 +26,7 @@ const SignUpPage = () => {
     };
 
     return (
-        <Container fluid className="vh-100 bg-dark">
+        <Container fluid className="min-svh-100 bg-dark">
             <Row className="justify-content-md-center py-5">
                 <Col lg={4} md={6}>
                     <Card className="py-3">

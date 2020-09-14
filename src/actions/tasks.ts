@@ -4,25 +4,35 @@ import { Task } from '../types/Task';
 import { TaskTime } from '../types/TaskTime';
 import { TaskFilters } from '../constants/TaskFilters';
 import { AsyncAction } from '../types/AsyncAction';
+import { TaskFormValues } from '../types/TaskFormValues';
 
 export function fetchAllTasks(): AsyncAction {
     return {
+        request: {
+            method: 'GET',
+            url: '/tasks',
+        },
         types: [
             ActionTypes.TASK_FETCH_ALL_PENDING,
             ActionTypes.TASK_FETCH_ALL_SUCCESS,
             ActionTypes.TASK_FETCH_ALL_ERROR,
         ],
-        request: {
-            method: 'GET',
-            url: '/tasks',
-        }
     };
 }
 
-export function createTask(task: Task): SyncAction {
+export function createTask(task: TaskFormValues): AsyncAction {
+    const { title, description, hours, minutes, seconds } = task;
     return {
-        type: ActionTypes.TASK_ADD_PENDING,
-        payload: task,
+       request: {
+           method: 'POST',
+           url: '/tasks',
+           data: { title, description, durationTime: { hours, minutes, seconds } }
+       },
+       types: [
+           ActionTypes.TASK_CREATE_PENDING,
+           ActionTypes.TASK_CREATE_SUCCESS,
+           ActionTypes.TASK_CREATE_ERROR
+       ],
     };
 }
 
@@ -36,6 +46,20 @@ export function selectTask(id: string): SyncAction {
 export function resetSelectedTask(): SyncAction {
     return {
         type: ActionTypes.TASK_REMOVE_SELECTED
+    };
+}
+
+export function fetchTaskById(id: string): AsyncAction {
+    return {
+        request: {
+            method: 'GET',
+            url: `/tasks/${id}`
+        },
+        types: [
+            null,
+            ActionTypes.TASK_FETCH_DETAILS_SUCCESS,
+            null
+        ]
     };
 }
 

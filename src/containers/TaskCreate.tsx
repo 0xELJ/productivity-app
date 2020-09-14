@@ -1,11 +1,9 @@
 import React, { FC } from 'react';
 import TaskForm from '../components/task/TaskForm';
 import { Button, Modal } from 'react-bootstrap';
-import { v4 as uuid } from 'uuid';
 import { useActions } from '../hooks/useActions';
 import { createTask } from '../actions/tasks';
 import { TaskFormValues } from '../types/TaskFormValues';
-import { Task } from '../types/Task';
 import { TaskCreateProps } from '../types/TaskCreateProps';
 
 const TaskCreate: FC<TaskCreateProps> = ({ show, handleClose }) => {
@@ -17,23 +15,9 @@ const TaskCreate: FC<TaskCreateProps> = ({ show, handleClose }) => {
         taskForm.dispatchEvent(new Event('submit', { cancelable: true }));
     };
 
-    const onSubmit = (values: TaskFormValues) => {
-        const task = generateTask(values);
+    const onSubmit = (task: TaskFormValues) => {
         addTask(task);
         handleClose();
-    };
-
-    const generateTask = ({ title, description, hours, minutes, seconds }: TaskFormValues): Task => {
-        return {
-            id: uuid(),
-            title,
-            description,
-            durationTime: { hours, minutes, seconds},
-            timeLeft: { hours, minutes, seconds},
-            active: false,
-            enabled: true,
-            createdAt: new Date().toISOString()
-        };
     };
 
     return (

@@ -22,7 +22,7 @@ const TaskList: FC<TaskListProps> = props => {
         }
         return tasks.map((task, i) => {
             return (
-                <Draggable key={task.id} draggableId={task.id} index={i}>
+                <Draggable key={task.id} draggableId={task.id.toString()} index={i}>
                     {(provided, snapshot) => (
                         <TaskListItem
                             {...task}

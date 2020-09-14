@@ -9,7 +9,11 @@ const tasksSelector = (state: RootState) => state.tasks.allTasks;
 const filterSelector = (state: { filters: { pendingFilter: TaskFilters } }) => state.filters.pendingFilter;
 
 const getPendingTasks = (tasks: Task[], filter: TaskFilters): Task[] => {
-    const pendingTasks = tasks.filter(({ status }) => status === TaskStatus.OPEN);
+    const taskInProgress = tasks.find(t => t.status === TaskStatus.IN_PROGRESS);
+    let pendingTasks = tasks.filter(({ status }) => status === TaskStatus.OPEN);
+    if (taskInProgress) {
+        pendingTasks = [taskInProgress, ...pendingTasks];
+    }
     return filterTasks(pendingTasks, filter);
 };
 

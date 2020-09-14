@@ -17,11 +17,11 @@ export function deleteTask(tasks: Task[], taskId: string) {
 }
 
 export function completeTask(tasks: Task[], timeLeft: TaskTime) {
-    const newTasks = [...tasks];
-    const inProgressTask = newTasks.findIndex(({ enabled }) => enabled);
-    newTasks[inProgressTask].enabled = false;
-    newTasks[inProgressTask].timeLeft = timeLeft;
-    return newTasks;
+    // const newTasks = [...tasks];
+    // const inProgressTask = newTasks.findIndex(({ enabled }) => enabled);
+    // newTasks[inProgressTask].enabled = false;
+    // newTasks[inProgressTask].timeLeft = timeLeft;
+    // return newTasks;
 }
 
 export function reorderTasks(tasks: Task[], startId: string, endId: string) {

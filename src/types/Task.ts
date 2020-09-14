@@ -8,7 +8,5 @@ export interface Task {
     durationTime: TaskTime;
     timeLeft: TaskTime;
     createdAt: string;
-    status?: TaskStatus;
-    active?: boolean;
-    enabled?: boolean;
+    status: TaskStatus;
 }
