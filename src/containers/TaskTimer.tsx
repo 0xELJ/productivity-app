@@ -3,17 +3,19 @@ import { Button } from 'react-bootstrap';
 import { useGlobalState } from '../hooks/useGlobalState';
 import { useActions } from '../hooks/useActions';
 import Icon from '@mdi/react';
-import { mdiPlay, mdiPause, mdiRefresh, mdiStop } from '@mdi/js';
+import { mdiPause, mdiPlay, mdiRefresh, mdiStop } from '@mdi/js';
 import { Task } from '../types/Task';
 import { formatTaskTime } from '../utils/formatTaskTime';
 import activeTaskSelector from '../selectors/activeTaskSelector';
 import { TaskTime } from '../types/TaskTime';
 import { useInterval } from '../hooks/useInterval';
-import { completeTask, updateTask } from '../actions/tasks';
+import { updateTask } from '../actions/tasks';
+import { TaskStatus } from '../types/TaskStatus';
+import { TaskUpdate } from '../types/TaskUpdate';
 
 const TaskTimer: FC = () => {
     const activeTask = useGlobalState(activeTaskSelector);
-    const [finishTask, patchTask] = useActions([completeTask, updateTask], []);
+    const patchTask = useActions(updateTask, []);
     const [taskTime, setTaskTime] = useState<TaskTime>({hours: 0, minutes: 0, seconds: 0 });
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
@@ -42,26 +44,30 @@ const TaskTimer: FC = () => {
 
     const onPlayOrPause = () => {
         setIsRunning(!isRunning);
-        onUpdateTask();
+        updateTaskTime();
     };
 
     const onStop = () => {
         setIsRunning(false);
-        onUpdateTask(activeTask?.durationTime);
+        updateTaskTime(activeTask?.durationTime);
     };
 
     const onRefresh = () => {
-        onUpdateTask(activeTask?.durationTime);
+        updateTaskTime(activeTask?.durationTime);
     };
 
     const onComplete = () => {
         setIsRunning(false);
-        finishTask(taskTime);
+        updateTaskTime(taskTime, TaskStatus.DONE);
     };
 
-    const onUpdateTask = (customTime?: TaskTime) => {
-        const currentTask = activeTask as Task;
-        patchTask({ ...currentTask, remainingTime: customTime || taskTime });
+    const updateTaskTime = (customTime?: TaskTime, status?: TaskStatus) => {
+        const { id } = activeTask as Task;
+        let newValues: TaskUpdate = { id, remainingTime: customTime || taskTime };
+        if (status) {
+            newValues.status = status;
+        }
+        patchTask(newValues);
     };
 
     return (
