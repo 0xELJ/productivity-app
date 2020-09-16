@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Spinner } from 'react-bootstrap';
 import TaskForm from '../components/task/TaskForm';
 import { TaskFormValues } from '../types/TaskFormValues';
 import { TaskDetailsProps } from '../types/TaskDetailsProps';
@@ -9,15 +9,16 @@ import { Task } from '../types/Task';
 import { useGlobalState } from '../hooks/useGlobalState';
 import { useActions } from '../hooks/useActions';
 import { TaskStatus } from '../types/TaskStatus';
+import { RequestStatus } from '../constants/RequestStatus';
 
 const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
-    const { selectedId, task } = useGlobalState(({ selectedTask }) => selectedTask);
+    const { selectedId, task, fetchStatus, updateStatus, removeStatus } = useGlobalState(({ selectedTask }) => selectedTask);
     const [getTask, removeTask, resetTask, patchTask] = useActions([
         fetchTaskById,
         deleteTask,
         resetSelectedTask,
-        updateTask]
-    , []);
+        updateTask
+    ], []);
     const [taskFormId] = useState('taskForm');
 
     useEffect(() => {
@@ -31,6 +32,12 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
            resetTask();
        }
     }, [resetTask]);
+
+    useEffect(() => {
+        if (removeStatus === RequestStatus.SUCCESSFUL || updateStatus === RequestStatus.SUCCESSFUL) {
+            handleClose();
+        }
+    }, [removeStatus, updateStatus, handleClose]);
 
     const getFormValues = () => {
         if (task) {
@@ -49,32 +56,32 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
     const onSubmit = (formValues: TaskFormValues) => {
          const newTaskValues = updateTaskValues(formValues);
          patchTask(newTaskValues);
-         handleClose();
     };
 
     const updateTaskValues = (newValues: TaskFormValues) => {
-        const { id, createdAt, status } = task as Task;
+        const { id } = task as Task;
         const { title, description, hours, minutes, seconds } = newValues;
         return {
             id,
             title,
             description,
             durationTime: { hours, minutes, seconds },
-            timeLeft: { hours, minutes, seconds },
-            createdAt,
-            status
+            remainingTime: { hours, minutes, seconds }
         };
     };
 
     const onDeleteTask = () => {
         const { id } = task as Task;
         removeTask(id);
-        handleClose();
     };
 
     const allowUpdate = () => {
         if (task?.status !== TaskStatus.DONE) {
-            return <Button onClick={handleSubmitEvent} variant="warning">Modificar</Button>;
+            return (
+                <Button onClick={handleSubmitEvent} variant="warning">
+                    {updateStatus === RequestStatus.PENDING ? <Spinner animation="border" variant="light" /> : 'Modificar'}
+                </Button>
+            );
         }
         return null;
     };
@@ -89,7 +96,7 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
                     id={taskFormId}
                     onSubmit={onSubmit}
                     initialValues={getFormValues()}
-                    disabled={task?.status === TaskStatus.DONE}
+                    disabled={task?.status === TaskStatus.DONE || fetchStatus === RequestStatus.PENDING}
                 />
                 <p className="mb-0">
                     <span className="font-weight-bold">Creada: </span>
@@ -97,7 +104,14 @@ const TaskDetails: FC<TaskDetailsProps> = ({ show, handleClose }) => {
                 </p>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={onDeleteTask} variant="danger" className="mr-auto">Eliminar</Button>
+                <Button
+                    onClick={onDeleteTask}
+                    variant="danger"
+                    className="mr-auto"
+                    disabled={removeStatus === RequestStatus.PENDING}
+                >
+                    {removeStatus === RequestStatus.PENDING ? <Spinner animation="border" variant="light" /> : 'Eliminar'}
+                </Button>
                 {allowUpdate()}
             </Modal.Footer>
         </Modal>

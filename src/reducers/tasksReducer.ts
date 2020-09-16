@@ -22,6 +22,14 @@ export function tasksReducer(state = INITIAL_STATE, action: SyncAction): TaskSta
             return { loading: RequestStatus.SUCCESSFUL, allTasks: [...state.allTasks, action.payload] };
         case ActionTypes.TASK_CREATE_ERROR:
             return { ...state, loading: RequestStatus.FAILED };
+        case ActionTypes.TASK_UPDATE_ITEM_SUCCESS:
+            const updatedTasks = [...state.allTasks];
+            const updatedId = updatedTasks.findIndex(({ id }) => id === action.payload.id);
+            updatedTasks[updatedId] = action.payload;
+            return { ...state, allTasks: updatedTasks };
+        case ActionTypes.TASK_REMOVE_ITEM_SUCCESS:
+            const newTasks = state.allTasks.filter(({ id }) => id !== action.payload);
+            return { ...state, allTasks: newTasks };
         default:
             return state;
     }

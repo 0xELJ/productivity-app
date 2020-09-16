@@ -2,12 +2,12 @@ import { TaskTime } from './TaskTime';
 import { DraggableProvided } from 'react-beautiful-dnd';
 
 export interface TaskListItemProps {
-    id: string;
+    id: number;
     title: string;
     description: string;
     durationTime: TaskTime;
     active: boolean;
-    onSelect(id: string): void;
+    onSelect(id: number): void;
     innerRef(element?: HTMLElement | null): any;
     provided: DraggableProvided;
 }

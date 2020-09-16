@@ -13,7 +13,7 @@ const TaskList: FC<TaskListProps> = props => {
         if (!destination) {
             return;
         }
-        onDragEnd(tasks[source.index].id, tasks[destination.index].id);
+        onDragEnd(tasks[source.index].id.toString(), tasks[destination.index].id.toString());
     };
 
     const renderTasks = () => {

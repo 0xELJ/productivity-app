@@ -18,8 +18,8 @@ const TaskTimer: FC = () => {
     const [isRunning, setIsRunning] = useState<boolean>(false);
 
     useEffect(() => {
-        if (activeTask?.timeLeft) {
-            setTaskTime(activeTask.timeLeft);
+        if (activeTask?.remainingTime) {
+            setTaskTime(activeTask.remainingTime);
         } else {
             setTaskTime({ hours: 0, minutes: 0, seconds: 0 });
         }
@@ -61,7 +61,7 @@ const TaskTimer: FC = () => {
 
     const onUpdateTask = (customTime?: TaskTime) => {
         const currentTask = activeTask as Task;
-        patchTask({ ...currentTask, timeLeft: customTime || taskTime });
+        patchTask({ ...currentTask, remainingTime: customTime || taskTime });
     };
 
     return (

@@ -4,8 +4,8 @@ import { TaskFilters } from '../constants/TaskFilters';
 export interface TaskListProps {
     title: string;
     tasks: Task[];
-    onSelectTask(id: string): void;
-    activeTaskId?: string;
+    onSelectTask(id: number): void;
+    activeTaskId?: number;
     onPressFilter(filter: TaskFilters): void;
     currentFilter: TaskFilters;
     onDragEnd(startId: string, endId: string): void;

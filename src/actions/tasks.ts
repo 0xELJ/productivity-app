@@ -1,6 +1,6 @@
 import { SyncAction } from '../types/SyncAction';
 import { ActionTypes } from '../constants/ActionTypes';
-import { Task } from '../types/Task';
+import { TaskUpdate } from '../types/TaskUpdate';
 import { TaskTime } from '../types/TaskTime';
 import { TaskFilters } from '../constants/TaskFilters';
 import { AsyncAction } from '../types/AsyncAction';
@@ -36,7 +36,7 @@ export function createTask(task: TaskFormValues): AsyncAction {
     };
 }
 
-export function selectTask(id: string): SyncAction {
+export function selectTask(id: number): SyncAction {
     return {
         type: ActionTypes.TASK_SET_SELECTED,
         payload: id
@@ -49,31 +49,46 @@ export function resetSelectedTask(): SyncAction {
     };
 }
 
-export function fetchTaskById(id: string): AsyncAction {
+export function fetchTaskById(id: number): AsyncAction {
     return {
         request: {
             method: 'GET',
             url: `/tasks/${id}`
         },
         types: [
-            null,
+            ActionTypes.TASK_FETCH_DETAILS_PENDING,
             ActionTypes.TASK_FETCH_DETAILS_SUCCESS,
-            null
+            ActionTypes.TASK_FETCH_DETAILS_ERROR
         ]
     };
 }
 
-export function updateTask(task: Task): SyncAction {
+export function updateTask(task: TaskUpdate): AsyncAction {
     return {
-        type: ActionTypes.TASK_UPDATE_ITEM,
-        payload: task
+        request: {
+            method: 'PATCH',
+            url: `/tasks/${task.id}`,
+            data: task,
+        },
+        types: [
+            ActionTypes.TASK_UPDATE_ITEM_PENDING,
+            ActionTypes.TASK_UPDATE_ITEM_SUCCESS,
+            ActionTypes.TASK_UPDATE_ITEM_ERROR,
+        ]
     };
 }
 
-export function deleteTask(taskId: string): SyncAction {
+export function deleteTask(taskId: number): AsyncAction {
     return {
-        type: ActionTypes.TASK_DELETE_ITEM,
-        payload: taskId
+        request: {
+            method: 'DELETE',
+            url: `/tasks/${taskId}`
+        },
+        types: [
+            ActionTypes.TASK_REMOVE_ITEM_PENDING,
+            ActionTypes.TASK_REMOVE_ITEM_SUCCESS,
+            ActionTypes.TASK_REMOVE_ITEM_ERROR
+        ]
     };
 }
 

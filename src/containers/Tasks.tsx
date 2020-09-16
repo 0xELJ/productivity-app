@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useGlobalState } from '../hooks/useGlobalState';
 import { useActions } from '../hooks/useActions';
@@ -31,6 +31,7 @@ const Tasks: FC = () => {
     ], []);
     const [showCreateTask, setShowCreateTask] = useState(false);
     const [showTaskDetails, setShowTaskDetails] = useState(false);
+    const closeTaskDetails = useCallback(() => setShowTaskDetails(false), []);
 
     useEffect(() => {
         getAllTasks();
@@ -40,12 +41,8 @@ const Tasks: FC = () => {
         setShowCreateTask(!showCreateTask);
     };
 
-    const toggleTaskDetails = () => {
-        setShowTaskDetails(!showTaskDetails);
-    };
-
-    const handleSelectTask = (id: string) => {
-        toggleTaskDetails();
+    const handleSelectTask = (id: number) => {
+        setShowTaskDetails(true);
         setSelectedTask(id);
     };
 
@@ -64,7 +61,9 @@ const Tasks: FC = () => {
     return (
         <section className="my-5">
             <div className="container">
-                <Button onClick={toggleCreateTask} variant="success" size="lg">Agregar tarea</Button>
+                <Button onClick={toggleCreateTask} variant="success" size="lg">
+                    Agregar tarea
+                </Button>
                 <Row className="mt-4">
                     <Col md="6" className="mb-4">
                         <TaskList
@@ -91,7 +90,7 @@ const Tasks: FC = () => {
                 </Row>
             </div>
             <TaskCreate show={showCreateTask} handleClose={toggleCreateTask} />
-            <TaskDetails show={showTaskDetails} handleClose={toggleTaskDetails} />
+            <TaskDetails show={showTaskDetails} handleClose={closeTaskDetails} />
         </section>
     );
 };
